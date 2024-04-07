@@ -58,20 +58,20 @@ public class AccountController : ControllerBase
 
     [Authorize]
     [HttpPost("friends/invite")]
-    public async Task<IActionResult> InviteFriend([FromQuery] string u)
+    public async Task<IActionResult> InviteFriend([FromBody] string username)
     {
         var userId = Guid.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
-        await _service.AddFriend(userId, u);
+        await _service.AddFriend(userId, username);
 
         return Ok();
     }
 
     [Authorize]
     [HttpPost("friends/accept")]
-    public async Task<IActionResult> AcceptFriend([FromQuery] string u)
+    public async Task<IActionResult> AcceptFriend([FromBody] string username)
     {
         var userId = Guid.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
-        await _service.AcceptFriendRequest(userId, u);
+        await _service.AcceptFriendRequest(userId, username);
 
         return Ok();
     }

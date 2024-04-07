@@ -37,7 +37,7 @@
 
     <Shell.FlyoutFooter>
         <StackLayout Padding="10">
-            <Button Text="Sign out" />
+            <Button Text="Sign out" Clicked="Button_Clicked"/>
         </StackLayout>
     </Shell.FlyoutFooter>
     

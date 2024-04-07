@@ -88,10 +88,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Models\Dashboard\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <Compile Update="Views\Startup\LoginPage.xaml.cs">
 	    <DependentUpon>LoginPage.xaml</DependentUpon>
 	  </Compile>

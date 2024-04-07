@@ -25,7 +25,11 @@ public sealed class LoginPageViewModel : ViewModelBase
 
     public LoginPageViewModel(IApiService apiService)
     {
-        User = new User();
+        User = new User() {
+            Username = "kubspl",
+            Password = "zaqzaq"
+        };
+
         LoginCommand = new Command(Login);
         RegisterCommand = new Command(Register);
         _apiService = apiService;
