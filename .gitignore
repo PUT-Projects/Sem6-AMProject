@@ -376,3 +376,6 @@ Directory.Build.Override.props
 
 # Only the "snapshots" directory should be added to Git, not the "snapshots-diff" directory
 snapshots-diff/
+ChatterAPI/ChatterAPI/chatter.db
+ChatterAPI/ChatterAPI/chatter.db-shm
+ChatterAPI/ChatterAPI/chatter.db-wal
