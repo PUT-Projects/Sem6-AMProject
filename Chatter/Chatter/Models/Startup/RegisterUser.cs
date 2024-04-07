@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Chatter.Models.Startup;
 
-public class User
+public class RegisterUser : User
 {
-    public string Username { get; set; } = string.Empty;
-    public string Password { get; set; } = string.Empty;
+    public string ConfirmPassword { get; set; } = string.Empty;
 }

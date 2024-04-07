@@ -6,12 +6,22 @@
              Title="RegisterPage"
              Shell.NavBarIsVisible="False">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" 
+                           Color="{StaticResource Gray300}" Grid.RowSpan="2" ZIndex="1" 
+                           WidthRequest="90" HeightRequest="90"/>
+        
         <Frame Grid.Row="0"
                Padding="10"
                Margin="15,15,0,0"
@@ -34,7 +44,6 @@
             Padding="30,0" 
             VerticalOptions="Center">
 
-
             <Label Text="Create your new, own account!" FontSize="32" FontAttributes="None" HorizontalTextAlignment="Center"
                TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"/>
 
@@ -47,7 +56,8 @@
                     </Image>
                 </Frame>
                 <Frame Style="{StaticResource FrameStyle}">
-                    <Entry Text="{Binding User.Username}" Margin="20,0,0,0" VerticalOptions="Center" Placeholder="Username" Keyboard="Default" />
+                    <Entry Text="{Binding User.Username}" Margin="20,0,0,0" VerticalOptions="Center" 
+                           Placeholder="Username" Keyboard="Default" />
                 </Frame>
             </StackLayout>
 
@@ -60,24 +70,28 @@
                     </Image>
                 </Frame>
                 <Frame Style="{StaticResource FrameStyle}">
-                    <Entry Text="{Binding User.Password}" Margin="20,0,0,0" VerticalOptions="Center" Placeholder="Password" IsPassword="True" />
+                    <Entry Text="{Binding User.Password}" Margin="20,0,0,0" VerticalOptions="Center" 
+                           Placeholder="Password" IsPassword="True" />
                 </Frame>
             </StackLayout>
 
             <StackLayout Orientation="Horizontal">
-                <Frame Style="{StaticResource IconFrameStyle}">
-                    <Image Source="lock.png" HeightRequest="20" WidthRequest="20">
+                <Frame x:Name="entryIconFrame" Style="{StaticResource IconFrameStyle}">
+                    <Image x:Name="entryIcon" Source="lock.png" HeightRequest="20" WidthRequest="20">
                         <Image.Behaviors>
                             <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
                         </Image.Behaviors>
                     </Image>
                 </Frame>
-                <Frame Style="{StaticResource FrameStyle}">
-                    <Entry Text="{Binding User.ConfirmPassword}" Margin="20,0,0,0" VerticalOptions="Center" Placeholder="Confirm password" IsPassword="True" />
+                <Frame x:Name="entryFrame" Style="{StaticResource FrameStyle}">
+                    <Entry Text="{Binding User.ConfirmPassword}" Margin="20,0,0,0" VerticalOptions="Center"
+                           Placeholder="Confirm password" IsPassword="True" TextChanged="Entry_TextChanged" />
                 </Frame>
             </StackLayout>
 
-            <Button Text="Register" WidthRequest="100" CornerRadius="20" HorizontalOptions="Center" Command="{Binding RegisterCommand}" />
+            <Button Text="Register" WidthRequest="100" CornerRadius="20" 
+                    HorizontalOptions="Center" Command="{Binding RegisterCommand}" 
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}"/>
 
         </VerticalStackLayout>
     </Grid>

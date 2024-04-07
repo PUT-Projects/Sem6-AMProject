@@ -16,4 +16,10 @@ public partial class RegisterPage : ContentPage
 		viewModel.BackCommand.Execute(null);
 		return true;
     }
+
+    private void Entry_TextChanged(object sender, TextChangedEventArgs e)
+    {
+		var viewModel = (RegisterPageViewModel)BindingContext;
+		viewModel.UpdateColors(entryFrame, entryIconFrame, entryIcon);
+    }
 }
