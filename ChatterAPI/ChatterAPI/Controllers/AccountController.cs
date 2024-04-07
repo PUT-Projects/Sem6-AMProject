@@ -37,6 +37,16 @@ public class AccountController : ControllerBase
     }
 
     [Authorize]
+    [HttpGet]
+    public IActionResult GetUser()
+    {
+        var userId = Guid.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
+        var username = User.Claims.First(c => c.Type == ClaimTypes.Name).Value;
+
+        return Ok(new { userId, username });
+    }
+
+    [Authorize]
     [HttpGet("friends")]
     public async Task<IActionResult> GetFriends()
     {

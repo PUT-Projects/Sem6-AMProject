@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System.Net;
 using System.Text;
 
 namespace ChatterAPI;
@@ -17,7 +18,15 @@ public class Program
 
         // Add services to the container.
 
-        
+        builder.WebHost.ConfigureKestrel((context, serverOptions) =>
+        {
+            var ip = new IPAddress(new byte[] { 192, 168, 1, 75 });
+            serverOptions.Listen(ip, 5000);
+            serverOptions.Listen(ip, 5001, listenOptions =>
+            {
+                listenOptions.UseHttps();
+            });
+        });
         ConfigureService(builder.Services, builder.Configuration);
 
         builder.Services.AddControllers();
@@ -71,6 +80,7 @@ public class Program
         );
         services.AddScoped<ErrorHandlingMiddleware>();
         services.AddScoped<AccountService>();
+        services.AddScoped<ChattingService>();
         services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
     }
 }
