@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Chatter.Views.Startup.LoginPage"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Shell.NavBarIsVisible="False"
+             Title="LoginPage">
+
+    <VerticalStackLayout
+            Spacing="25" 
+            Padding="30,0" 
+            VerticalOptions="Center">
+
+        <Image Source="company_logo.jpg" HeightRequest="150" WidthRequest="150" />
+
+        <VerticalStackLayout Spacing="5">
+            <Label Text="Welcome!" FontSize="28" TextColor="Gray" HorizontalTextAlignment="Center" />
+            <Label Text="Login to your account" FontSize="18" TextColor="Gray" HorizontalTextAlignment="Center" />
+        </VerticalStackLayout>
+
+        <StackLayout Orientation="Horizontal">
+            <Frame Style="{StaticResource IconFrameStyle}">
+                <Image Source="user.png" HeightRequest="20" WidthRequest="20">
+                    <Image.Behaviors>
+                        <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+                    </Image.Behaviors>
+                </Image>
+            </Frame>
+            <Frame Style="{StaticResource FrameStyle}">
+                <Entry Text="{Binding User.Username}" Margin="20,0,0,0" VerticalOptions="Center" Placeholder="Username" Keyboard="Default" />
+            </Frame>
+        </StackLayout>
+
+        <StackLayout Orientation="Horizontal">
+            <Frame Style="{StaticResource IconFrameStyle}">
+                <Image Source="lock.png" HeightRequest="20" WidthRequest="20">
+                    <Image.Behaviors>
+                        <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+                    </Image.Behaviors>
+                </Image>
+            </Frame>
+            <Frame Style="{StaticResource FrameStyle}">
+                <Entry Text="{Binding User.Password}" Margin="20,0,0,0" VerticalOptions="Center" Placeholder="Password" IsPassword="True" />
+            </Frame>
+        </StackLayout>
+
+        <Button Text="Sign In" WidthRequest="100" CornerRadius="20" HorizontalOptions="Center" Command="{Binding LoginCommand}" />
+
+        <StackLayout Orientation="Horizontal" Spacing="5" HorizontalOptions="Center">
+            <Label Text="Don't have account?" TextColor="Gray" Padding="0,8,0,8"/>
+            <Label Text="Sign Up here" TextColor="#50b3f2" Padding="8">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding RegisterCommand}"/>
+                </Label.GestureRecognizers>
+            </Label>
+        </StackLayout>
+    </VerticalStackLayout>
+</ContentPage>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Chatter.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Chatter"
+    xmlns:startup="clr-namespace:Chatter.Views.Startup"
+    xmlns:dashboard="clr-namespace:Chatter.Views.Dashboard"
+    xmlns:models="clr-namespace:Chatter.Models"
+    Shell.FlyoutBehavior="Flyout"
+    Shell.TabBarIsVisible="False"
+    FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+    Shell.TitleColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
+    Shell.ForegroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
+    Title="Chatter">
+
+    <ShellContent
+        Title="Login Page" FlyoutItemIsVisible="False"
+        ContentTemplate="{DataTemplate startup:LoginPage}"
+        Route="LoginPage" />
+
+    <ShellContent
+        Title="Register Page" FlyoutItemIsVisible="False"
+        ContentTemplate="{DataTemplate startup:RegisterPage}"
+        Route="RegisterPage" />
+
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent
+            Title="Dashboard" Icon="{Static models:Icons.Dashboard}"
+            ContentTemplate="{DataTemplate dashboard:DashboardPage}"
+            Route="DashboardPage" />
+
+        <ShellContent
+            Title="People" Icon="{Static models:Icons.People}"
+            ContentTemplate="{DataTemplate dashboard:DashboardPage}" />
+    </FlyoutItem>
+
+    <Shell.FlyoutFooter>
+        <StackLayout Padding="10">
+            <Button Text="Sign out" />
+        </StackLayout>
+    </Shell.FlyoutFooter>
+    
+</Shell>
