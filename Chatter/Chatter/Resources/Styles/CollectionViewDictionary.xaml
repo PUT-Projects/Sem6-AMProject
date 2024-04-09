@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <DataTemplate x:Key="UserItemStyle">
+        <Grid Margin="5" ColumnDefinitions="60,*,*" RowDefinitions="*,*">
+
+
+            <Image Grid.Column="0" Grid.RowSpan="2" Source="{Binding ImageUrl}" Margin="0,0,5,0" />
+            <Label Grid.Column="1" Grid.Row="0" Text="{Binding Username}"
+                   FontSize="Large" HorizontalOptions="Start" VerticalOptions="Center" Margin="5,0,0,0"/>
+
+            <Ellipse Grid.Column="0" Grid.Row="1" 
+                     WidthRequest="14" HeightRequest="14" 
+                     HorizontalOptions="End" VerticalOptions="End" Margin="4">
+                <Ellipse.Triggers>
+                    <DataTrigger TargetType="Ellipse" Binding="{Binding IsOnline}" Value="True">
+                        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource OffBlack}}" />
+                    </DataTrigger>
+                    <DataTrigger  TargetType="Ellipse" Binding="{Binding IsOnline}" Value="False">
+                        <Setter Property="BackgroundColor" Value="Transparent"/>
+                    </DataTrigger>
+                </Ellipse.Triggers>
+
+            </Ellipse>
+
+            <Ellipse Grid.Column="0" Grid.Row="1" 
+                     WidthRequest="12" HeightRequest="12" 
+                     BackgroundColor="{Binding StatusColor}" 
+                     HorizontalOptions="End" VerticalOptions="End" Margin="5">
+                <Ellipse.Triggers>
+                    <DataTrigger TargetType="Ellipse" Binding="{Binding IsOnline}" Value="True">
+                        <Setter Property="BackgroundColor" Value="Green"/>
+                    </DataTrigger>
+                    <DataTrigger  TargetType="Ellipse" Binding="{Binding IsOnline}" Value="False">
+                        <Setter Property="BackgroundColor" Value="Transparent"/>
+                    </DataTrigger>
+                </Ellipse.Triggers>
+            </Ellipse>
+
+            <!--<Frame Grid.Column="1" Grid.ColumnSpan="2" 
+                   Grid.RowSpan="2"
+                   BackgroundColor="Transparent" 
+                   BorderColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}">
+
+                
+            </Frame>-->
+        </Grid>
+    </DataTemplate>
+
+</ResourceDictionary>

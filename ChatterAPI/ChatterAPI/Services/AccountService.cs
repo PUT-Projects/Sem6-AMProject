@@ -97,20 +97,19 @@ public class AccountService
         return user;
     }
 
-    public async Task<IEnumerable<string>> GetFriends(Guid userId)
+    public async Task<IEnumerable<FriendDto>> GetFriends(Guid userId)
     {
-        var friendIds = await _context.FriendPairs
+        var friendIds = _context.FriendPairs
             .Where(fp => fp.UserId == userId && fp.FriendshipStatus == FriendPair.Status.Friends)
-            .Select(fp => fp.FriendId).ToListAsync();
+            .Select(fp => fp.FriendId);
 
-        return await _context.Users.Where(u => friendIds.Contains(u.Id)).Select(u => u.Username).ToListAsync();
+        return await _context.Users.Where(u => friendIds.Contains(u.Id)).Select(u => new FriendDto { Username = u.Username }).ToListAsync();
     }
 
     public async Task<IEnumerable<User>> GetFriendRequests(Guid userId)
     {
-        var friendPairs = await _context.FriendPairs
-            .Where(fp => fp.FriendId == userId && fp.FriendshipStatus == FriendPair.Status.Invited)
-            .ToListAsync();
+        var friendPairs = _context.FriendPairs
+            .Where(fp => fp.FriendId == userId && fp.FriendshipStatus == FriendPair.Status.Invited);
 
         var friendIds = friendPairs.Select(fp => fp.UserId);
         return await _context.Users.Where(u => friendIds.Contains(u.Id)).ToListAsync();
@@ -176,6 +175,7 @@ public class AccountService
         await _context.SaveChangesAsync();
     }
 
+    // todo
     public async Task RemoveFriend(Guid userId, string friendUsername)
     {
         var friend = await _context.Users.FirstOrDefaultAsync(u => u.Username == friendUsername);

@@ -2,9 +2,9 @@ using Chatter.ViewModels.Dashboard;
 
 namespace Chatter.Views.Dashboard;
 
-public partial class DashboardPage : ContentPage
+public partial class DashboardView : ContentPage
 {
-	public DashboardPage(DashboardPageViewModel viewModel)
+	public DashboardView(DashboardViewModel viewModel)
 	{
 		InitializeComponent();
 		BindingContext = viewModel;

@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace Chatter.ViewModels.Startup;
 
-public sealed class LoginPageViewModel : ViewModelBase
+public sealed class LoginViewModel : ViewModelBase
 {
     private readonly IApiService _apiService;
 
@@ -23,7 +23,7 @@ public sealed class LoginPageViewModel : ViewModelBase
     public ICommand RegisterCommand { get; }
     public bool IsLoading { get; set; }
 
-    public LoginPageViewModel(IApiService apiService)
+    public LoginViewModel(IApiService apiService)
     {
         User = new User() {
             Username = "kubspl",
@@ -41,7 +41,7 @@ public sealed class LoginPageViewModel : ViewModelBase
         bool success = await _apiService.LoginUserAsync(User);
         IsLoading = false;
         if (success) {
-            await Shell.Current.GoToAsync($"//{nameof(DashboardPage)}");
+            await Shell.Current.GoToAsync($"//{nameof(DashboardView)}");
         } else {
 
         }
@@ -49,6 +49,6 @@ public sealed class LoginPageViewModel : ViewModelBase
 
     private async void Register()
     {
-        await Shell.Current.GoToAsync($"//{nameof(RegisterPage)}");
+        await Shell.Current.GoToAsync($"//{nameof(RegisterView)}");
     }
 }

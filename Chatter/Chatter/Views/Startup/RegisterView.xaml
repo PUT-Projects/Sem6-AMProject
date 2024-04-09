@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Chatter.Views.Startup.RegisterPage"
+             x:Class="Chatter.Views.Startup.RegisterView"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             Title="RegisterPage"
+             Title="RegisterView"
              Shell.NavBarIsVisible="False">
 
     <ContentPage.Resources>

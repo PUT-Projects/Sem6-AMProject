@@ -15,24 +15,24 @@
     Title="Chatter">
 
     <ShellContent
-        Title="Login Page" FlyoutItemIsVisible="False"
-        ContentTemplate="{DataTemplate startup:LoginPage}"
-        Route="LoginPage" />
+        Title="Login View" FlyoutItemIsVisible="False"
+        ContentTemplate="{DataTemplate startup:LoginView}"
+        Route="LoginView" />
 
     <ShellContent
-        Title="Register Page" FlyoutItemIsVisible="False"
-        ContentTemplate="{DataTemplate startup:RegisterPage}"
-        Route="RegisterPage" />
+        Title="Register View" FlyoutItemIsVisible="False"
+        ContentTemplate="{DataTemplate startup:RegisterView}"
+        Route="RegisterView" />
 
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
         <ShellContent
             Title="Dashboard" Icon="{Static models:Icons.Dashboard}"
-            ContentTemplate="{DataTemplate dashboard:DashboardPage}"
-            Route="DashboardPage" />
+            ContentTemplate="{DataTemplate dashboard:DashboardView}"
+            Route="DashboardView" />
 
         <ShellContent
             Title="People" Icon="{Static models:Icons.People}"
-            ContentTemplate="{DataTemplate dashboard:DashboardPage}" />
+            ContentTemplate="{DataTemplate dashboard:DashboardView}" />
     </FlyoutItem>
 
     <Shell.FlyoutFooter>

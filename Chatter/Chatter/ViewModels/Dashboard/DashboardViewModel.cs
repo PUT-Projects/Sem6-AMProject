@@ -10,13 +10,13 @@ using System.Windows.Input;
 
 namespace Chatter.ViewModels.Dashboard;
 
-public sealed class DashboardPageViewModel : ViewModelBase
+public sealed class DashboardViewModel : ViewModelBase
 {
     private readonly IApiService _apiService;
 
     public ObservableCollection<User> Friends { get; } = new();
     public ICommand RefreshCommand { get; }
-    public DashboardPageViewModel(IApiService apiService)
+    public DashboardViewModel(IApiService apiService)
     {
         _apiService = apiService;
         RefreshCommand = new Command(async () => await RefreshAsync());
@@ -24,7 +24,20 @@ public sealed class DashboardPageViewModel : ViewModelBase
 
     private async Task RefreshAsync()
     {
-        var users = await _apiService.GetFriendsAsync();
+        //var users = await _apiService.GetFriendsAsync();
+
+        var users = new[] {
+            new User{
+                Username = "kubspl"
+            },
+            new User {
+                Username = "maciek"
+            },
+            new User {
+                Username = "monia",
+                IsOnline = true
+            }
+        };
 
         Friends.Clear();
 

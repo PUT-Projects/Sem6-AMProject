@@ -13,15 +13,15 @@ public partial class AppShell : Shell
         _apiService = apiService;
         InitializeComponent();
 
-        Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
-        Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
-        Routing.RegisterRoute(nameof(DashboardPage), typeof(DashboardPage));
+        Routing.RegisterRoute(nameof(RegisterView), typeof(RegisterView));
+        Routing.RegisterRoute(nameof(LoginView), typeof(LoginView));
+        Routing.RegisterRoute(nameof(DashboardView), typeof(DashboardView));
     }
 
     private void Button_Clicked(object sender, EventArgs e)
     {
         _apiService.Logout();
         Shell.Current.FlyoutIsPresented = false;
-        Current.GoToAsync($"//{nameof(LoginPage)}");
+        Current.GoToAsync($"//{nameof(LoginView)}");
     }
 }

@@ -52,14 +52,14 @@ public static class MauiProgram
 
         services.AddHttpClient();
         // ViewModels
-        services.AddSingleton<LoginPageViewModel>();
-        services.AddSingleton<RegisterPageViewModel>();
-        services.AddSingleton<DashboardPageViewModel>();
+        services.AddSingleton<LoginViewModel>();
+        services.AddSingleton<RegisterViewModel>();
+        services.AddSingleton<DashboardViewModel>();
 
 
         // Views
-        services.AddSingleton<LoginPage>();
-        services.AddSingleton<RegisterPage>();
-        services.AddSingleton<DashboardPage>();
+        services.AddSingleton<LoginView>();
+        services.AddSingleton<RegisterView>();
+        services.AddSingleton<DashboardView>();
     }
 }

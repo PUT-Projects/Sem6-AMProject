@@ -2,9 +2,9 @@ using Chatter.ViewModels.Startup;
 
 namespace Chatter.Views.Startup;
 
-public partial class LoginPage : ContentPage
+public partial class LoginView : ContentPage
 {
-	public LoginPage(LoginPageViewModel viewModel)
+	public LoginView(LoginViewModel viewModel)
 	{
 		InitializeComponent();
 		BindingContext = viewModel;

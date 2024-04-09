@@ -65,6 +65,162 @@
 	  <None Remove="Resources\Images\dashboard.png" />
 	  <None Remove="Resources\Images\lock.png" />
 	  <None Remove="Resources\Images\more_icon.png" />
+	  <None Remove="Resources\Images\ProfilePictures\alcohol.png" />
+	  <None Remove="Resources\Images\ProfilePictures\apple.png" />
+	  <None Remove="Resources\Images\ProfilePictures\banana.png" />
+	  <None Remove="Resources\Images\ProfilePictures\bread.png" />
+	  <None Remove="Resources\Images\ProfilePictures\bread_1.png" />
+	  <None Remove="Resources\Images\ProfilePictures\cake.png" />
+	  <None Remove="Resources\Images\ProfilePictures\can.png" />
+	  <None Remove="Resources\Images\ProfilePictures\candy.png" />
+	  <None Remove="Resources\Images\ProfilePictures\canned_food.png" />
+	  <None Remove="Resources\Images\ProfilePictures\carrot.png" />
+	  <None Remove="Resources\Images\ProfilePictures\cheese.png" />
+	  <None Remove="Resources\Images\ProfilePictures\chicken_leg.png" />
+	  <None Remove="Resources\Images\ProfilePictures\chocolate_bar.png" />
+	  <None Remove="Resources\Images\ProfilePictures\cookie.png" />
+	  <None Remove="Resources\Images\ProfilePictures\cream.png" />
+	  <None Remove="Resources\Images\ProfilePictures\croissant.png" />
+	  <None Remove="Resources\Images\ProfilePictures\cucumber.png" />
+	  <None Remove="Resources\Images\ProfilePictures\eggs.png" />
+	  <None Remove="Resources\Images\ProfilePictures\fish.png" />
+	  <None Remove="Resources\Images\ProfilePictures\fish_1.png" />
+	  <None Remove="Resources\Images\ProfilePictures\flour.png" />
+	  <None Remove="Resources\Images\ProfilePictures\ham.png" />
+	  <None Remove="Resources\Images\ProfilePictures\ham_1.png" />
+	  <None Remove="Resources\Images\ProfilePictures\ice.png" />
+	  <None Remove="Resources\Images\ProfilePictures\ice_cream.png" />
+	  <None Remove="Resources\Images\ProfilePictures\juice.png" />
+	  <None Remove="Resources\Images\ProfilePictures\lemon.png" />
+	  <None Remove="Resources\Images\ProfilePictures\meat.png" />
+	  <None Remove="Resources\Images\ProfilePictures\milk_bottle.png" />
+	  <None Remove="Resources\Images\ProfilePictures\mushroom.png" />
+	  <None Remove="Resources\Images\ProfilePictures\notfound.png" />
+	  <None Remove="Resources\Images\ProfilePictures\no_internet.png" />
+	  <None Remove="Resources\Images\ProfilePictures\oil_bottle.png" />
+	  <None Remove="Resources\Images\ProfilePictures\pasta.png" />
+	  <None Remove="Resources\Images\ProfilePictures\peas.png" />
+	  <None Remove="Resources\Images\ProfilePictures\pepper.png" />
+	  <None Remove="Resources\Images\ProfilePictures\pineapple.png" />
+	  <None Remove="Resources\Images\ProfilePictures\pizza.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %281%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2810%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2811%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2812%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2813%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2814%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2815%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2816%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2817%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2818%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2819%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %282%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2820%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2821%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2822%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2823%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2824%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2825%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2826%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2827%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2828%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2829%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %283%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2830%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2831%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2832%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2833%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2834%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2835%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2836%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2837%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2838%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2839%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %284%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2840%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2841%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2842%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2843%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2844%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2845%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2846%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2847%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2848%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2849%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %285%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2851%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2852%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %2853%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %286%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %287%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %288%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile %289%29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile1.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile10.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile11.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile12.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile13.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile14.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile15.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile16.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile17.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile18.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile19.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile2.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile20.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile21.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile22.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile23.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile24.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile25.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile26.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile27.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile28.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile29.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile3.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile30.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile31.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile32.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile33.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile34.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile35.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile36.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile37.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile38.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile39.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile4.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile40.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile41.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile42.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile43.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile44.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile45.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile46.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile47.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile48.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile49.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile5.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile50.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile51.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile6.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile7.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile8.png" />
+	  <None Remove="Resources\Images\ProfilePictures\profile9.png" />
+	  <None Remove="Resources\Images\ProfilePictures\rice.png" />
+	  <None Remove="Resources\Images\ProfilePictures\sauce.png" />
+	  <None Remove="Resources\Images\ProfilePictures\seasoning.png" />
+	  <None Remove="Resources\Images\ProfilePictures\shrimp.png" />
+	  <None Remove="Resources\Images\ProfilePictures\snack.png" />
+	  <None Remove="Resources\Images\ProfilePictures\spaguetti.png" />
+	  <None Remove="Resources\Images\ProfilePictures\sparkling_drink.png" />
+	  <None Remove="Resources\Images\ProfilePictures\tea_bag.png" />
+	  <None Remove="Resources\Images\ProfilePictures\toffee.png" />
+	  <None Remove="Resources\Images\ProfilePictures\tomato.png" />
+	  <None Remove="Resources\Images\ProfilePictures\tomato_sauce.png" />
+	  <None Remove="Resources\Images\ProfilePictures\trash.png" />
+	  <None Remove="Resources\Images\ProfilePictures\watermelon.png" />
+	  <None Remove="Resources\Images\ProfilePictures\water_bottle.png" />
+	  <None Remove="Resources\Images\ProfilePictures\yogurt.png" />
 	  <None Remove="Resources\Images\team.png" />
 	  <None Remove="Resources\Images\user.png" />
 	</ItemGroup>
@@ -76,10 +232,65 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile1.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile10.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile11.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile12.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile13.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile14.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile15.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile16.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile17.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile18.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile19.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile2.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile20.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile21.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile22.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile23.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile24.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile25.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile26.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile27.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile28.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile29.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile3.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile30.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile31.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile32.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile33.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile34.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile35.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile36.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile37.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile38.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile39.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile4.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile40.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile41.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile42.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile43.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile44.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile45.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile46.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile47.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile48.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile49.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile5.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile50.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile51.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile6.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile7.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile8.png" />
+	  <MauiImage Include="Resources\Images\ProfilePictures\profile9.png" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui" Version="8.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="8.0.3" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.14" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.14" />
@@ -88,22 +299,31 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Views\Startup\LoginPage.xaml.cs">
-	    <DependentUpon>LoginPage.xaml</DependentUpon>
+	  <Compile Update="Views\Dashboard\DashboardView.xaml.cs">
+	    <DependentUpon>DashboardView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\Startup\LoginView.xaml.cs">
+	    <DependentUpon>LoginView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\Startup\RegisterView.xaml.cs">
+	    <DependentUpon>RegisterView.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Resources\Styles\CollectionViewDictionary.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Resources\Styles\StartupStyles.xaml">
 	    <Generator></Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Dashboard\DashboardPage.xaml">
+	  <MauiXaml Update="Views\Dashboard\DashboardView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Startup\LoginPage.xaml">
+	  <MauiXaml Update="Views\Startup\LoginView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Startup\RegisterPage.xaml">
+	  <MauiXaml Update="Views\Startup\RegisterView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

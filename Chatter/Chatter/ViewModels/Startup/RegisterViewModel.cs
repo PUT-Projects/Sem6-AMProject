@@ -16,7 +16,7 @@ using System.Windows.Input;
 
 namespace Chatter.ViewModels.Startup;
 
-public sealed class RegisterPageViewModel : ViewModelBase
+public sealed class RegisterViewModel : ViewModelBase
 {
     private readonly IApiService _apiService;
 
@@ -24,7 +24,7 @@ public sealed class RegisterPageViewModel : ViewModelBase
     public ICommand RegisterCommand { get; }
     public ICommand BackCommand { get; }
     public bool IsLoading { get; set; }
-    public RegisterPageViewModel(IApiService apiService)
+    public RegisterViewModel(IApiService apiService)
     {
         _apiService = apiService;
 
@@ -69,14 +69,14 @@ public sealed class RegisterPageViewModel : ViewModelBase
         ClearUser();
         IsLoading = false;
 
-        await Shell.Current.GoToAsync($"//{nameof(DashboardPage)}");
+        await Shell.Current.GoToAsync($"//{nameof(DashboardView)}");
     }
 
     private async void OnBackButtonPressed()
     {
         ClearUser();
 
-        await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+        await Shell.Current.GoToAsync($"//{nameof(LoginView)}");
     }
 
     private async Task<bool> AnalyzeInputAndHighlightErrors()

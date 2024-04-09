@@ -2,9 +2,9 @@ using Chatter.ViewModels.Startup;
 
 namespace Chatter.Views.Startup;
 
-public partial class RegisterPage : ContentPage
+public partial class RegisterView : ContentPage
 {
-	public RegisterPage(RegisterPageViewModel viewModel)
+	public RegisterView(RegisterViewModel viewModel)
 	{
 		InitializeComponent();
 		BindingContext = viewModel;
@@ -12,14 +12,14 @@ public partial class RegisterPage : ContentPage
 
     protected override bool OnBackButtonPressed()
     {
-		var viewModel = (RegisterPageViewModel)BindingContext;
+		var viewModel = (RegisterViewModel)BindingContext;
 		viewModel.BackCommand.Execute(null);
 		return true;
     }
 
     private void Entry_TextChanged(object sender, TextChangedEventArgs e)
     {
-		var viewModel = (RegisterPageViewModel)BindingContext;
+		var viewModel = (RegisterViewModel)BindingContext;
 		viewModel.UpdateColors(entryFrame, entryIconFrame, entryIcon);
     }
 }
