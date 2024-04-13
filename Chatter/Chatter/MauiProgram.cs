@@ -48,18 +48,25 @@ public static class MauiProgram
         services.AddSingleton(settings);
         // bind settings
 
+        services.AddHttpClient();
+
         services.AddSingleton<IApiService, ApiService>();
 
-        services.AddHttpClient();
         // ViewModels
         services.AddSingleton<LoginViewModel>();
         services.AddSingleton<RegisterViewModel>();
         services.AddSingleton<DashboardViewModel>();
+        services.AddSingleton<SearchViewModel>();
+        services.AddSingleton<InviteViewModel>();
+        services.AddSingleton<AcceptViewModel>();
 
 
         // Views
         services.AddSingleton<LoginView>();
         services.AddSingleton<RegisterView>();
         services.AddSingleton<DashboardView>();
+        services.AddSingleton<SearchView>();
+        services.AddSingleton<InviteView>();
+        services.AddSingleton<AcceptView>();
     }
 }

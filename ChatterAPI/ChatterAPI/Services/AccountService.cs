@@ -108,10 +108,11 @@ public class AccountService
 
     public async Task<IEnumerable<User>> GetFriendRequests(Guid userId)
     {
-        var friendPairs = _context.FriendPairs
-            .Where(fp => fp.FriendId == userId && fp.FriendshipStatus == FriendPair.Status.Invited);
+        var friendIds = _context.FriendPairs
+            .Where(fp => fp.FriendId == userId && fp.FriendshipStatus == FriendPair.Status.Invited)
+            .Select(fp => fp.UserId);
 
-        var friendIds = friendPairs.Select(fp => fp.UserId);
+
         return await _context.Users.Where(u => friendIds.Contains(u.Id)).ToListAsync();
     }
 
@@ -149,7 +150,7 @@ public class AccountService
     {
         var friend = await _context.Users.FirstOrDefaultAsync(u => u.Username == friendUsername);
         if (friend is null) {
-            throw new BadRequestException("User not found!");
+            throw new BadRequestException("Friend request not found");
         }
 
         var friendPair = await _context.FriendPairs
@@ -174,7 +175,30 @@ public class AccountService
 
         await _context.SaveChangesAsync();
     }
+    public async Task RejectFriendRequest(Guid userId, string username)
+    {
+        var friend = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+        if (friend is null) {
+            throw new BadRequestException("Friend request not found");
+        }
 
+        // remove the friend pair or both pairs if they exist
+        var friendPair = await _context.FriendPairs
+            .FirstOrDefaultAsync(fp => fp.UserId == friend.Id && fp.FriendId == userId);
+        if (friendPair is null) {
+            throw new BadRequestException("Friend request not found");
+        }
+
+        _context.FriendPairs.Remove(friendPair);
+
+        var reversePair = await _context.FriendPairs
+            .FirstOrDefaultAsync(fp => fp.UserId == userId && fp.FriendId == friend.Id);
+        if (reversePair is not null) {
+            _context.FriendPairs.Remove(reversePair);
+        }
+
+        await _context.SaveChangesAsync();
+    }
     // todo
     public async Task RemoveFriend(Guid userId, string friendUsername)
     {
@@ -229,5 +253,38 @@ public class AccountService
     public async Task<bool> FriendPairExists(Guid userId, Guid friendId, FriendPair.Status status)
     {
         return await _context.FriendPairs.AnyAsync(fp => fp.UserId == userId && fp.FriendId == friendId && fp.FriendshipStatus == status);
+    }
+
+    public async Task<IEnumerable<string>> SearchFriends(Guid userId, string username)
+    {
+        var friendIds = _context.FriendPairs
+            .Where(fp => fp.UserId == userId && fp.FriendshipStatus == FriendPair.Status.Friends)
+            .Select(fp => fp.FriendId);
+
+        var friends = await _context.Users
+            .Where(u => friendIds.Contains(u.Id) && u.Username.ToLower().StartsWith(username))
+            .Select(u => u.Username)
+            .ToListAsync();
+
+        return friends;
+    }
+
+    public async Task<IEnumerable<SearchUserDto>> SearchUsers(Guid userId, string username)
+    {
+        // search users that arent invited or friends
+        var friendIds = _context.FriendPairs
+            .Where(fp => fp.UserId == userId && fp.FriendshipStatus == FriendPair.Status.Friends)
+            .Select(fp => fp.FriendId);
+
+        var invitedIds = _context.FriendPairs
+            .Where(fp => fp.UserId == userId && fp.FriendshipStatus == FriendPair.Status.Invited)
+            .Select(fp => fp.FriendId);
+
+        var users = await _context.Users
+            .Where(u => !friendIds.Contains(u.Id) && u.Username.ToLower().StartsWith(username))
+            .Select(u => new SearchUserDto { Username = u.Username, IsInvited = invitedIds.Contains(u.Id) })
+            .ToListAsync();
+
+        return users;
     }
 }

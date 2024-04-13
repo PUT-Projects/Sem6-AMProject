@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Chatter.Views.Dashboard.SearchView"
+             xmlns:DataTemplate="clr-namespace:Chatter.Selectors"
+             Shell.NavBarIsVisible="False"
+             Title="SearchView">
+
+    <ContentPage.Resources>
+        <DataTemplate:UserDataTemplateSelector x:Key="SearchItemTemplate"/>
+    </ContentPage.Resources>
+
+    <VerticalStackLayout Spacing="5">
+        <Frame BackgroundColor="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" Padding="-8" Margin="15" CornerRadius="40" BorderColor="Transparent">
+            <SearchBar x:Name="searchBar" Placeholder="Search" Text="{Binding SearchQuery}" Margin="5" />
+        </Frame>
+
+
+        <CollectionView ItemsSource="{Binding Friends}" Margin="10" HorizontalOptions="Center" 
+                        ItemTemplate="{StaticResource SearchFriendStyle}">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical"
+                                 HorizontalItemSpacing="1"
+                                 VerticalItemSpacing="1"
+                                 Span="2"/>
+            </CollectionView.ItemsLayout>
+        </CollectionView>
+    </VerticalStackLayout>
+</ContentPage>

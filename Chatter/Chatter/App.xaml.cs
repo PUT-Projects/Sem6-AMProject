@@ -1,4 +1,5 @@
 ﻿using Chatter.Services;
+using Chatter.ViewModels;
 using Chatter.ViewModels.Startup;
 using Chatter.Views.Startup;
 using Microsoft.Maui.ApplicationModel;
@@ -11,7 +12,7 @@ public partial class App : Application
     {
         InitializeComponent();
 
-        var api = serviceProvider.GetService<IApiService>();
-        MainPage = new AppShell(api!);
+        var vm = serviceProvider.GetService<AppShellViewModel>();
+        MainPage = new AppShell(vm!);
     }
 }

@@ -1,12 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <?xaml-comp compile="true" ?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
 
     <DataTemplate x:Key="UserItemStyle">
         <Grid Margin="5" ColumnDefinitions="60,*,*" RowDefinitions="*,*">
-
-
+            
+            
+            
             <Image Grid.Column="0" Grid.RowSpan="2" Source="{Binding ImageUrl}" Margin="0,0,5,0" />
             <Label Grid.Column="1" Grid.Row="0" Text="{Binding Username}"
                    FontSize="Large" HorizontalOptions="Start" VerticalOptions="Center" Margin="5,0,0,0"/>
@@ -46,6 +48,103 @@
 
                 
             </Frame>-->
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="SearchFriendStyle">
+        <Grid RowDefinitions="5*,3*" HeightRequest="100" Padding="0"
+              BackgroundColor="{AppThemeBinding Light='#eeeeee', Dark={StaticResource Gray950}}">
+
+
+            <Image Grid.Row="0" Source="{Binding ImageUrl}" Margin="0,15,0,0" 
+                   HorizontalOptions="Center" VerticalOptions="End"/>
+            <Label Grid.Row="1" Text="{Binding Username}" Margin="0,5,0,0"
+                   FontSize="14" LineBreakMode="NoWrap"
+                   HorizontalOptions="Center" VerticalOptions="Start"  />
+
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="SearchUserStyle">
+        <Grid RowDefinitions="5*,3*" ColumnDefinitions="2*,*,*" HeightRequest="100" Padding="0"
+              BackgroundColor="{AppThemeBinding Light='#eeeeee', Dark={StaticResource Gray950}}">
+
+
+            <Image Grid.Row="0" Grid.ColumnSpan="2"
+                   Source="{Binding ImageUrl}" Margin="20,15,0,0" 
+                   HorizontalOptions="Center" VerticalOptions="End"/>
+            <Label Grid.Row="1" Grid.ColumnSpan="3" 
+                   Text="{Binding Username}" Margin="0,5,0,0"
+                   FontSize="14" LineBreakMode="NoWrap"
+                   HorizontalOptions="Center" VerticalOptions="Start"  />
+
+            <Frame Style="{StaticResource IconFrameStyle}" BorderColor="Transparent"
+                   Grid.RowSpan="2" Grid.Column="1" Grid.ColumnSpan="2" VerticalOptions="Center" HorizontalOptions="Start" 
+                   HeightRequest="40" WidthRequest="40" CornerRadius="20">
+                
+                <Image Source="{Binding InviteImg}" HeightRequest="15" WidthRequest="15" Margin="100">
+                    <Image.Behaviors>
+                        <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+                    </Image.Behaviors>
+                </Image>
+
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer 
+                        Command="{Binding BindingContext.InviteCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}" 
+                        CommandParameter="{Binding Username}"/>
+                </Frame.GestureRecognizers>
+            </Frame>
+
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="AcceptUserStyle">
+        <Grid Margin="5" ColumnDefinitions="50,*,*">
+            <Image Grid.Column="0" Source="{Binding ImageUrl}" Margin="0,0,5,0" />
+            <Label Grid.Column="1" Text="{Binding Username}"
+                   FontSize="Large" HorizontalOptions="Start" VerticalOptions="Center" Margin="5,0,0,0"/>
+
+            <Frame Grid.Column="2" CornerRadius="0" 
+                   MaximumWidthRequest="2" WidthRequest="2" MinimumWidthRequest="2" 
+                   BorderColor="Transparent" BackgroundColor="{StaticResource Primary}" 
+                   HorizontalOptions="Start"/>
+
+            <HorizontalStackLayout Grid.Column="2" HorizontalOptions="End" Spacing="15">
+                <Frame Style="{StaticResource IconFrameStyle}" BorderColor="Green"
+                   Grid.RowSpan="2" Grid.Column="1" Grid.ColumnSpan="2" VerticalOptions="Center" HorizontalOptions="Center" 
+                   HeightRequest="38" WidthRequest="38" CornerRadius="19">
+
+                    <Image Source="check.png" HeightRequest="20" WidthRequest="20" HorizontalOptions="Center">
+                        <Image.Behaviors>
+                            <toolkit:IconTintColorBehavior TintColor="Green" />
+                        </Image.Behaviors>
+                    </Image>
+
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer 
+                        Command="{Binding BindingContext.AcceptCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}" 
+                        CommandParameter="{Binding Username}"/>
+                    </Frame.GestureRecognizers>
+                </Frame>
+
+                <Frame Style="{StaticResource IconFrameStyle}" BorderColor="Red" Margin="0,0,5,0"
+                   Grid.RowSpan="2" Grid.Column="1" Grid.ColumnSpan="2" VerticalOptions="Center" HorizontalOptions="Center" 
+                   HeightRequest="38" WidthRequest="38" CornerRadius="19">
+
+                    <Image Source="close.png" HeightRequest="20" WidthRequest="20" HorizontalOptions="Center">
+                        <Image.Behaviors>
+                            <toolkit:IconTintColorBehavior TintColor="Red" />
+                        </Image.Behaviors>
+                    </Image>
+
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer 
+                        Command="{Binding BindingContext.RejectCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}" 
+                        CommandParameter="{Binding Username}"/>
+                    </Frame.GestureRecognizers>
+                </Frame>
+
+            </HorizontalStackLayout>
         </Grid>
     </DataTemplate>
 

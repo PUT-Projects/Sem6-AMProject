@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Chatter.Views.Dashboard.AcceptView"
+             Title="Incoming friend requests">
+    <RefreshView IsEnabled="True" IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshCommand}"
+                 BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray900}}"
+                 RefreshColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}">
+        
+        <VerticalStackLayout>
+            <CollectionView ItemsSource="{Binding FriendRequests}"
+                        Margin="10" HorizontalOptions="Center" 
+                        ItemTemplate="{StaticResource AcceptUserStyle}">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"
+                                 HorizontalItemSpacing="1"
+                                 VerticalItemSpacing="1"
+                                 Span="1"/>
+                </CollectionView.ItemsLayout>
+            </CollectionView>
+        </VerticalStackLayout>
+    </RefreshView>
+</ContentPage>

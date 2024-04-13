@@ -40,18 +40,16 @@ public class AccountController : ControllerBase
     [HttpGet]
     public IActionResult GetUser()
     {
-        var userId = Guid.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
         var username = User.Claims.First(c => c.Type == ClaimTypes.Name).Value;
 
-        return Ok(new { userId, username });
+        return Ok(new { UserId, username });
     }
 
     [Authorize]
     [HttpGet("friends")]
     public async Task<IActionResult> GetFriends()
     {
-        var userId = Guid.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
-        var friends = await _service.GetFriends(userId);
+        var friends = await _service.GetFriends(UserId);
 
         return Ok(friends);
     }
@@ -76,6 +74,42 @@ public class AccountController : ControllerBase
         return Ok();
     }
 
+    [Authorize]
+    [HttpPost("friends/reject")]
+    public async Task<IActionResult> RejectFriend([FromBody] string username)
+    {
+        var userId = Guid.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
+        await _service.RejectFriendRequest(userId, username);
 
+        return Ok();
+    }
 
+    [Authorize]
+    [HttpPost("friends/search")]
+    public async Task<IActionResult> SearchFriends([FromBody] string username)
+    {
+       var users = await _service.SearchFriends(UserId, username);
+
+        return Ok(users);
+    }
+
+    [Authorize]
+    [HttpPost("users/search")]
+    public async Task<IActionResult> SearchUsers([FromBody] string username)
+    {
+        var users = await _service.SearchUsers(UserId, username);
+
+        return Ok(users);
+    }
+
+    [Authorize]
+    [HttpGet("friends/requests")]
+    public async Task<IActionResult> GetFriendRequests()
+    {
+        var requests = await _service.GetFriendRequests(UserId);
+
+        return Ok(requests);
+    }
+
+    private Guid UserId => Guid.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 }

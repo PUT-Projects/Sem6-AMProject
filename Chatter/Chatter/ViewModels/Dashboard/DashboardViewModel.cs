@@ -1,5 +1,6 @@
 ﻿using Chatter.Models.Dashboard;
 using Chatter.Services;
+using Chatter.Views.Dashboard;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,19 +17,41 @@ public sealed class DashboardViewModel : ViewModelBase
 
     public ObservableCollection<User> Friends { get; } = new();
     public ICommand RefreshCommand { get; }
+    public ICommand SearchCommand { get; }
+    public ICommand InviteCommand { get; }
+    public bool IsRefreshing { get; set; }
     public DashboardViewModel(IApiService apiService)
     {
         _apiService = apiService;
-        RefreshCommand = new Command(async () => await RefreshAsync());
+        RefreshCommand = new Command(RefreshAsync);
+        SearchCommand = new Command(GoToSearchView);
+        InviteCommand = new Command(GoToInviteView);
+        IsRefreshing = false;
     }
 
-    private async Task RefreshAsync()
+    private async void GoToSearchView()
+    { 
+        await Shell.Current.GoToAsync($"//{nameof(SearchView)}");
+    }
+
+    private async void GoToInviteView()
+    {
+        await Shell.Current.GoToAsync($"//{nameof(InviteView)}");
+    }
+
+    private async void RefreshAsync()
     {
         //var users = await _apiService.GetFriendsAsync();
-
+        IsRefreshing = true;
         var users = new[] {
             new User{
                 Username = "kubspl"
+            },
+            new User{
+                Username = "kubs2"
+            },
+            new User{
+                Username = "kubatuba"
             },
             new User {
                 Username = "maciek"
@@ -44,5 +67,7 @@ public sealed class DashboardViewModel : ViewModelBase
         foreach (var user in users) {
             Friends.Add(user);
         }
+
+        IsRefreshing = false;
     }
 }

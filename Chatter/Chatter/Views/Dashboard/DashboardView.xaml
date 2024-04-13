@@ -2,11 +2,40 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Chatter.Views.Dashboard.DashboardView"
-             Title="Contacts">
-    <VerticalStackLayout Spacing="5">
-        <Button Text="Refresh" Command="{Binding RefreshCommand}" Margin="10" />
-        <CollectionView ItemsSource="{Binding Friends}" Margin="10"
-                        ItemTemplate="{StaticResource UserItemStyle}">
-        </CollectionView>
-    </VerticalStackLayout>
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Title="Contacts"
+             HideSoftInputOnTapped="True">
+    <RefreshView IsEnabled="True" IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshCommand}"
+                 BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray900}}"
+                 RefreshColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}">
+
+        <VerticalStackLayout Spacing="5">
+
+            <Border HorizontalOptions="Fill"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}"
+                    StrokeShape="RoundRectangle 40"
+                    Stroke="Transparent"
+                    Margin="15,0,15,0" Padding="2">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SearchCommand}" />
+                </Border.GestureRecognizers>
+                <HorizontalStackLayout Spacing="5" Padding="10">
+                    <Image Source="search.png" 
+                           HeightRequest="17" WidthRequest="17" Margin="10,0" 
+                           VerticalOptions="Center" HorizontalOptions="Center">
+                        <Image.Behaviors>
+                            <toolkit:IconTintColorBehavior TintColor="{StaticResource Gray400}" />
+                        </Image.Behaviors>
+                    </Image>
+                    <Label Text="Search" TextColor="{StaticResource Gray500}" 
+                           VerticalOptions="Center" HorizontalOptions="Center"/>
+                </HorizontalStackLayout>
+            </Border>
+                    
+            
+            <CollectionView ItemsSource="{Binding Friends}" Margin="10"
+                            ItemTemplate="{StaticResource UserItemStyle}">
+            </CollectionView>
+        </VerticalStackLayout>
+    </RefreshView>
 </ContentPage>

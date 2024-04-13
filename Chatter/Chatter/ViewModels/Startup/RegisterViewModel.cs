@@ -56,7 +56,7 @@ public sealed class RegisterViewModel : ViewModelBase
     {
         TrimInput();
 
-        if (!await AnalyzeInputAndHighlightErrors()) return;
+        if (!await AnalyzeInputAndHighlightErrorsAsync()) return;
 
         IsLoading = true;
         if (!await _apiService.RegisterUserAsync(User)) {
@@ -79,7 +79,7 @@ public sealed class RegisterViewModel : ViewModelBase
         await Shell.Current.GoToAsync($"//{nameof(LoginView)}");
     }
 
-    private async Task<bool> AnalyzeInputAndHighlightErrors()
+    private async Task<bool> AnalyzeInputAndHighlightErrorsAsync()
     {
         if (string.IsNullOrWhiteSpace(User.Username) || string.IsNullOrWhiteSpace(User.Password) || string.IsNullOrWhiteSpace(User.ConfirmPassword)) {
             var toast = Toast.Make("Please fill in all fields.", ToastDuration.Long, 15);
@@ -94,7 +94,7 @@ public sealed class RegisterViewModel : ViewModelBase
         }
 
         if (User.Password.Length < 6) {
-            var toast = Toast.Make("Password must be at least 8 characters long.", ToastDuration.Long, 15);
+            var toast = Toast.Make("Password must be at least 6 characters long.", ToastDuration.Long, 15);
             await toast.Show();
             return false;
         }

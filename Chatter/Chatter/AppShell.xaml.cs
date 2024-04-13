@@ -1,4 +1,5 @@
 ﻿using Chatter.Services;
+using Chatter.ViewModels;
 using Chatter.Views.Dashboard;
 using Chatter.Views.Startup;
 
@@ -6,22 +7,22 @@ namespace Chatter;
 
 public partial class AppShell : Shell
 {
-    private readonly IApiService _apiService;
-
-    public AppShell(IApiService apiService)
+    public AppShell(AppShellViewModel viewModel)
     {
-        _apiService = apiService;
         InitializeComponent();
+        BindingContext = viewModel;
 
+        RegisterRoutes();
+    }
+
+    private void RegisterRoutes()
+    {
         Routing.RegisterRoute(nameof(RegisterView), typeof(RegisterView));
         Routing.RegisterRoute(nameof(LoginView), typeof(LoginView));
         Routing.RegisterRoute(nameof(DashboardView), typeof(DashboardView));
+        Routing.RegisterRoute(nameof(SearchView), typeof(SearchView));
+        Routing.RegisterRoute(nameof(InviteView), typeof(InviteView));
+        Routing.RegisterRoute(nameof(AcceptView), typeof(AcceptView));
     }
 
-    private void Button_Clicked(object sender, EventArgs e)
-    {
-        _apiService.Logout();
-        Shell.Current.FlyoutIsPresented = false;
-        Current.GoToAsync($"//{nameof(LoginView)}");
-    }
 }

@@ -15,29 +15,41 @@
     Title="Chatter">
 
     <ShellContent
-        Title="Login View" FlyoutItemIsVisible="False"
+        Title="Login View" FlyoutItemIsVisible="False" Shell.FlyoutBehavior="Disabled"
         ContentTemplate="{DataTemplate startup:LoginView}"
         Route="LoginView" />
 
     <ShellContent
-        Title="Register View" FlyoutItemIsVisible="False"
+        Title="Register View" FlyoutItemIsVisible="False" Shell.FlyoutBehavior="Disabled"
         ContentTemplate="{DataTemplate startup:RegisterView}"
         Route="RegisterView" />
 
+    <ShellContent
+        Title="Search View" FlyoutItemIsVisible="False" Shell.FlyoutBehavior="Disabled"
+        ContentTemplate="{DataTemplate dashboard:SearchView}"
+        Route="SearchView" />
+    
+    
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
         <ShellContent
-            Title="Dashboard" Icon="{Static models:Icons.Dashboard}"
+            Title="Contacts" Icon="{Static models:Icons.Dashboard}"
             ContentTemplate="{DataTemplate dashboard:DashboardView}"
             Route="DashboardView" />
 
         <ShellContent
-            Title="People" Icon="{Static models:Icons.People}"
-            ContentTemplate="{DataTemplate dashboard:DashboardView}" />
+            Title="Add friend" Icon="{Static models:Icons.People}"
+            ContentTemplate="{DataTemplate dashboard:InviteView}"
+            Route="InviteView"/>
+
+        <ShellContent
+            Title="Invites" Icon="{Static models:Icons.People}"
+            ContentTemplate="{DataTemplate dashboard:AcceptView}"
+            Route="AcceptView"/>
     </FlyoutItem>
 
     <Shell.FlyoutFooter>
         <StackLayout Padding="10">
-            <Button Text="Sign out" Clicked="Button_Clicked"/>
+            <Button Text="Sign out" Command="{Binding LogoutCommand}" Margin="5"/>
         </StackLayout>
     </Shell.FlyoutFooter>
     

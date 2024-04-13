@@ -3,8 +3,10 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Behaviors;
 using CommunityToolkit.Maui.Core;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,20 +31,7 @@ class ApiService : IApiService
 
         var response = await client.PostAsJsonAsync($"{_settings.ApiUrl}/account/register", user);
 
-        if (response is null) {
-            var toast = Toast.Make("An error occurred while registering the user.", ToastDuration.Long);
-            await toast.Show();
-            return false;
-        }
-
-        if (!response.IsSuccessStatusCode) {
-            var content = await response.Content.ReadAsStringAsync();
-            var toast = Toast.Make(content, ToastDuration.Long, 15);
-            await toast.Show();
-            return false;
-        }
-
-        return true;
+        return await HandleResponse(response, "An error occurred while registering the user.");
     }
 
     public async Task<bool> LoginUserAsync(Models.Startup.User user)
@@ -83,38 +72,39 @@ class ApiService : IApiService
         }
     }
 
-    public async Task<bool> InviteFriendAsync(User friend)
+    public async Task<bool> InviteFriendAsync(string friend)
     {
         using var client = _httpClientFactory.CreateClient();
         ConfigureHttpClient(client);
 
         var response = await client.PostAsJsonAsync($"{_settings.ApiUrl}/account/friends/invite", friend);
 
-        if (response is null) {
-            var toast = Toast.Make("An error occurred while inviting the friend.", ToastDuration.Long, 15);
-            await toast.Show();
-            return false;
-        }
-
-        if (!response.IsSuccessStatusCode) {
-            var content = await response.Content.ReadAsStringAsync();
-            var toast = Toast.Make(content, ToastDuration.Long);
-            await toast.Show();
-            return false;
-        }
-
-        return true;
+        return await HandleResponse(response, "An error occurred while inviting the friend.");
     }
 
-    public async Task<bool> AcceptFriendAsync(User friend)
+    public async Task<bool> AcceptFriendRequestAsync(string username)
     {
         using var client = _httpClientFactory.CreateClient();
         ConfigureHttpClient(client);
 
-        var response = await client.PostAsJsonAsync($"{_settings.ApiUrl}/account/friends/accept", friend.Username);
+        var response = await client.PostAsJsonAsync($"{_settings.ApiUrl}/account/friends/accept", username);
 
+        return await HandleResponse(response, "An error occurred while accepting the friend request.");
+    }
+    public async Task<bool> RejectFriendRequestAsync(string username)
+    {
+        using var client = _httpClientFactory.CreateClient();
+        ConfigureHttpClient(client);
+
+        var response = await client.PostAsJsonAsync($"{_settings.ApiUrl}/account/friends/reject", username);
+
+        return await HandleResponse(response, "An error occurred while rejecting the friend request.");
+    }
+
+    private async Task<bool> HandleResponse(HttpResponseMessage? response, string errorMessage)
+    {
         if (response is null) {
-            var toast = Toast.Make("An error occurred while accepting the friend request.", ToastDuration.Long);
+            var toast = Toast.Make(errorMessage, ToastDuration.Long);
             await toast.Show();
             return false;
         }
@@ -159,5 +149,62 @@ class ApiService : IApiService
         }
 
         client.DefaultRequestHeaders.Add("Authorization", _jwtToken);
+        client.Timeout = TimeSpan.FromSeconds(10);
+    }
+
+    public async Task<(IEnumerable<string> friends, IEnumerable<SearchUser> users)> SearchFriendsAndUsersAsync(string searchQuery)
+    {
+        var results = await Task.WhenAll(
+            Task.Run(async () => (object)await SearchFriendsAsync(searchQuery)),
+            Task.Run(async () => (object)await SearchUsersAsync(searchQuery))
+        );
+
+        return ((IEnumerable<string>)results[0], (IEnumerable<SearchUser>)results[1]);
+    }
+    public async Task<IEnumerable<string>> SearchFriendsAsync(string searchQuery)
+    {
+        string query = $"{_settings.ApiUrl}/account/friends/search";
+        return await SearchUsersTemplateAsync<string>(searchQuery, query);
+    }
+
+    public async Task<IEnumerable<SearchUser>> SearchUsersAsync(string searchQuery)
+    {
+        string query = $"{_settings.ApiUrl}/account/users/search";
+        return await SearchUsersTemplateAsync<SearchUser>(searchQuery, query);
+    }
+
+    private async Task<IEnumerable<T>> SearchUsersTemplateAsync<T>(string searchQuery, string query)
+    {
+        using var client = _httpClientFactory.CreateClient();
+        ConfigureHttpClient(client);
+
+        var response = await client.PostAsJsonAsync(query, searchQuery);
+
+        if (response is null) {
+            var toast = Toast.Make("An error occurred while searching for users.", ToastDuration.Long);
+            await toast.Show();
+            return [];
+        }
+
+        if (!response.IsSuccessStatusCode) {
+            var content = await response.Content.ReadAsStringAsync();
+            var toast = Toast.Make(content, ToastDuration.Long);
+            await toast.Show();
+            return [];
+        }
+
+        var users = await response.Content.ReadFromJsonAsync<IEnumerable<T>>();
+
+        return users ?? [];
+    }
+
+    public async Task<IEnumerable<string>> GetFriendRequests()
+    {
+        using var client = _httpClientFactory.CreateClient();
+        ConfigureHttpClient(client);
+
+        var requests = await client.GetFromJsonAsync<IEnumerable<string>>($"{_settings.ApiUrl}/account/friends/requests");
+
+        return requests ?? [];
     }
 }
