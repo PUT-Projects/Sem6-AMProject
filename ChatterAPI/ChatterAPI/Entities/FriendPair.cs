@@ -10,4 +10,5 @@ public class FriendPair
     public Guid UserId { get; set; }
     public Guid FriendId { get; set; }
     public Status FriendshipStatus { get; set; }
+    public DateTime TimeStamp { get; set; }
 }

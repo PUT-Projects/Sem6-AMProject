@@ -56,10 +56,10 @@ public class AccountController : ControllerBase
 
     [Authorize]
     [HttpPost("friends/invite")]
-    public async Task<IActionResult> InviteFriend([FromBody] string username)
+    public async Task<IActionResult> InviteFriend([FromBody] FriendRequestDto user)
     {
         var userId = Guid.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
-        await _service.AddFriend(userId, username);
+        await _service.AddFriend(userId, user);
 
         return Ok();
     }
@@ -83,7 +83,7 @@ public class AccountController : ControllerBase
 
         return Ok();
     }
-
+        
     [Authorize]
     [HttpPost("friends/search")]
     public async Task<IActionResult> SearchFriends([FromBody] string username)

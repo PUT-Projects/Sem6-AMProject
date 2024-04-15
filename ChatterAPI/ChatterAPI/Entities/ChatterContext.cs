@@ -22,11 +22,13 @@ public class ChatterContext : DbContext
         modelBuilder.Entity<Message>().Property(m => m.SenderId).IsRequired();
         modelBuilder.Entity<Message>().Property(m => m.ReceiverId).IsRequired();
         modelBuilder.Entity<Message>().Property(m => m.Content).IsRequired();
+        modelBuilder.Entity<Message>().Property(m => m.Type).IsRequired();
         modelBuilder.Entity<Message>().Property(m => m.TimeStamp).IsRequired();
 
         modelBuilder.Entity<FriendPair>().HasKey(f => new { f.UserId, f.FriendId });
         modelBuilder.Entity<FriendPair>().Property(f => f.UserId).IsRequired();
         modelBuilder.Entity<FriendPair>().Property(f => f.FriendId).IsRequired();
         modelBuilder.Entity<FriendPair>().Property(f => f.FriendshipStatus).IsRequired();
+        modelBuilder.Entity<FriendPair>().Property(f => f.TimeStamp).IsRequired();
     }
 }

@@ -106,19 +106,24 @@ public class AccountService
         return await _context.Users.Where(u => friendIds.Contains(u.Id)).Select(u => new FriendDto { Username = u.Username }).ToListAsync();
     }
 
-    public async Task<IEnumerable<User>> GetFriendRequests(Guid userId)
+    public async Task<IEnumerable<FriendRequestDto>> GetFriendRequests(Guid userId)
     {
         var friendIds = _context.FriendPairs
             .Where(fp => fp.FriendId == userId && fp.FriendshipStatus == FriendPair.Status.Invited)
             .Select(fp => fp.UserId);
 
 
-        return await _context.Users.Where(u => friendIds.Contains(u.Id)).ToListAsync();
+        var result = await _context.Users
+            .Where(u => friendIds.Contains(u.Id))
+            .Select(u => new FriendRequestDto { Username = u.Username })
+            .ToListAsync();
+
+        return result;
     }
 
-    public async Task AddFriend(Guid userId, string friendUsername)
+    public async Task AddFriend(Guid userId, FriendRequestDto user)
     {
-        var friend = await _context.Users.FirstOrDefaultAsync(u => u.Username == friendUsername);
+        var friend = await _context.Users.FirstOrDefaultAsync(u => u.Username == user.Username);
         if (friend is null) {
             throw new BadRequestException("User not found");
         }
@@ -140,6 +145,7 @@ public class AccountService
             UserId = userId,
             FriendId = friend.Id,
             FriendshipStatus = FriendPair.Status.Invited,
+            TimeStamp = user.TimeStamp,
         };
 
         await _context.FriendPairs.AddAsync(friendPair);
