@@ -12,6 +12,7 @@
     FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
     Shell.TitleColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
     Shell.ForegroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
+    Shell.NavBarHasShadow="True"
     Title="Chatter">
 
     <ShellContent
@@ -28,29 +29,31 @@
         Title="Search View" FlyoutItemIsVisible="False" Shell.FlyoutBehavior="Disabled"
         ContentTemplate="{DataTemplate dashboard:SearchView}"
         Route="SearchView" />
-    
-    
+
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
         <ShellContent
-            Title="Contacts" Icon="{Static models:Icons.Dashboard}"
+            Title="Contacts" Icon="{Static models:Icons.Chats}"
             ContentTemplate="{DataTemplate dashboard:DashboardView}"
-            Route="DashboardView" />
-
+            Route="DashboardView"/>
         <ShellContent
-            Title="Add friend" Icon="{Static models:Icons.People}"
+            Title="Add friend" Icon="{Static models:Icons.Invite}"
             ContentTemplate="{DataTemplate dashboard:InviteView}"
             Route="InviteView"/>
 
         <ShellContent
-            Title="Invites" Icon="{Static models:Icons.People}"
+            Title="Invites" Icon="{Static models:Icons.FriendRequest}"
             ContentTemplate="{DataTemplate dashboard:AcceptView}"
             Route="AcceptView"/>
     </FlyoutItem>
+
+    <Shell.FlyoutHeader>
+        <Label Text="Chatter" FontSize="Large" HorizontalOptions="Center" VerticalOptions="Center" Margin="10"/>
+    </Shell.FlyoutHeader>
 
     <Shell.FlyoutFooter>
         <StackLayout Padding="10">
             <Button Text="Sign out" Command="{Binding LogoutCommand}" Margin="5"/>
         </StackLayout>
     </Shell.FlyoutFooter>
-    
+
 </Shell>

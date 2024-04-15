@@ -11,7 +11,7 @@ public partial class InviteView : ContentPage
 		BindingContext = viewModel;
 	}
 
-    protected override void OnAppearing()
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
     {
         _viewModel.OnAppearing(searchBar);
     }

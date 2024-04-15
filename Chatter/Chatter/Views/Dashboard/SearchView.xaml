@@ -2,13 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Chatter.Views.Dashboard.SearchView"
-             xmlns:DataTemplate="clr-namespace:Chatter.Selectors"
              Shell.NavBarIsVisible="False"
              Title="SearchView">
-
-    <ContentPage.Resources>
-        <DataTemplate:UserDataTemplateSelector x:Key="SearchItemTemplate"/>
-    </ContentPage.Resources>
 
     <VerticalStackLayout Spacing="5">
         <Frame BackgroundColor="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" Padding="-8" Margin="15" CornerRadius="40" BorderColor="Transparent">

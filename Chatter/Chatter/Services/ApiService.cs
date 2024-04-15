@@ -18,6 +18,7 @@ class ApiService : IApiService
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly Settings _settings;
     private string _jwtToken = string.Empty;
+    public string Username { get; private set; } = string.Empty;
 
     public ApiService(IHttpClientFactory httpClientFactory, Settings settings)
     {
@@ -54,6 +55,7 @@ class ApiService : IApiService
         }
 
         _jwtToken = "Bearer " + content;
+        Username = user.Username;
         return true;
     }
 
@@ -77,7 +79,9 @@ class ApiService : IApiService
         using var client = _httpClientFactory.CreateClient();
         ConfigureHttpClient(client);
 
-        var response = await client.PostAsJsonAsync($"{_settings.ApiUrl}/account/friends/invite", friend);
+        var body = new { Username = friend, TimeStamp = DateTime.Now };
+
+        var response = await client.PostAsJsonAsync($"{_settings.ApiUrl}/account/friends/invite", body);
 
         return await HandleResponse(response, "An error occurred while inviting the friend.");
     }
@@ -101,6 +105,12 @@ class ApiService : IApiService
         return await HandleResponse(response, "An error occurred while rejecting the friend request.");
     }
 
+    /*
+     * Handles the response from the server.
+     *
+     * @param response The response from the server.
+     * returns True if the response is successful, False otherwise.
+     */
     private async Task<bool> HandleResponse(HttpResponseMessage? response, string errorMessage)
     {
         if (response is null) {
@@ -198,12 +208,12 @@ class ApiService : IApiService
         return users ?? [];
     }
 
-    public async Task<IEnumerable<string>> GetFriendRequests()
+    public async Task<IEnumerable<AcceptUser>> GetFriendRequests()
     {
         using var client = _httpClientFactory.CreateClient();
         ConfigureHttpClient(client);
 
-        var requests = await client.GetFromJsonAsync<IEnumerable<string>>($"{_settings.ApiUrl}/account/friends/requests");
+        var requests = await client.GetFromJsonAsync<IEnumerable<AcceptUser>>($"{_settings.ApiUrl}/account/friends/requests");
 
         return requests ?? [];
     }

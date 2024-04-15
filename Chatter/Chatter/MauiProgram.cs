@@ -12,6 +12,9 @@ using System.Reflection;
 using System.IO;
 using Microsoft.Extensions.FileProviders;
 using Chatter.Services;
+using Chatter.Repositories;
+using Chatter.ViewModels;
+using Chatter.Views;
 
 namespace Chatter;
 
@@ -47,8 +50,8 @@ public static class MauiProgram
         configuration.GetSection("Settings").Bind(settings);
         services.AddSingleton(settings);
         // bind settings
-
         services.AddHttpClient();
+        services.AddTransient<MessageRepository>();
 
         services.AddSingleton<IApiService, ApiService>();
 
@@ -59,6 +62,7 @@ public static class MauiProgram
         services.AddSingleton<SearchViewModel>();
         services.AddSingleton<InviteViewModel>();
         services.AddSingleton<AcceptViewModel>();
+        services.AddTransient<ChatViewModel>();
 
 
         // Views
@@ -68,5 +72,6 @@ public static class MauiProgram
         services.AddSingleton<SearchView>();
         services.AddSingleton<InviteView>();
         services.AddSingleton<AcceptView>();
+        services.AddTransient<ChatView>();
     }
 }

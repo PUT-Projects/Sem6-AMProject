@@ -1,6 +1,8 @@
 ﻿using Chatter.Models.Dashboard;
 using Chatter.Services;
+using Chatter.Views;
 using Chatter.Views.Dashboard;
+using CommunityToolkit.Maui.Alerts;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,11 +16,12 @@ namespace Chatter.ViewModels.Dashboard;
 public sealed class DashboardViewModel : ViewModelBase
 {
     private readonly IApiService _apiService;
-
-    public ObservableCollection<User> Friends { get; } = new();
+    public INavigation Navigation { get; set; }
+    public ObservableCollection<User> Friends { get; } = [];
     public ICommand RefreshCommand { get; }
     public ICommand SearchCommand { get; }
     public ICommand InviteCommand { get; }
+    public ICommand UserSelectedCommand { get; }
     public bool IsRefreshing { get; set; }
     public DashboardViewModel(IApiService apiService)
     {
@@ -26,7 +29,20 @@ public sealed class DashboardViewModel : ViewModelBase
         RefreshCommand = new Command(RefreshAsync);
         SearchCommand = new Command(GoToSearchView);
         InviteCommand = new Command(GoToInviteView);
+        UserSelectedCommand = new Command<string>(UserSelected);
         IsRefreshing = false;
+    }
+    private async void UserSelected(string username)
+    {
+        var chatView = CreateChatView(username);
+
+        if (chatView == null) {
+            var toast = Toast.Make("ChatView not found");
+            await toast.Show();
+            return;
+        }
+
+        await Navigation.PushAsync(chatView);
     }
 
     private async void GoToSearchView()
@@ -41,26 +57,7 @@ public sealed class DashboardViewModel : ViewModelBase
 
     private async void RefreshAsync()
     {
-        //var users = await _apiService.GetFriendsAsync();
-        IsRefreshing = true;
-        var users = new[] {
-            new User{
-                Username = "kubspl"
-            },
-            new User{
-                Username = "kubs2"
-            },
-            new User{
-                Username = "kubatuba"
-            },
-            new User {
-                Username = "maciek"
-            },
-            new User {
-                Username = "monia",
-                IsOnline = true
-            }
-        };
+        var users = await _apiService.GetFriendsAsync();
 
         Friends.Clear();
 
@@ -69,5 +66,18 @@ public sealed class DashboardViewModel : ViewModelBase
         }
 
         IsRefreshing = false;
+    }
+
+    private ChatView? CreateChatView(string username)
+    {
+        var chatView = Application.Current!.MainPage!
+            .Handler!.MauiContext!.Services.GetService<ChatView>();
+
+        if (chatView is null) return null;
+
+        var vm = (ChatViewModel)chatView.BindingContext;
+        vm.User = new User { Username = username };
+
+        return chatView;
     }
 }

@@ -34,7 +34,7 @@
                     
             
             <CollectionView ItemsSource="{Binding Friends}" Margin="10"
-                            ItemTemplate="{StaticResource UserItemStyle}">
+                            ItemTemplate="{StaticResource UserItemStyle}" SelectionMode="None">
             </CollectionView>
         </VerticalStackLayout>
     </RefreshView>

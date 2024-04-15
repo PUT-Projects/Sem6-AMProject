@@ -13,8 +13,8 @@ namespace Chatter.ViewModels.Dashboard;
 
 public class AcceptViewModel : ViewModelBase
 {
+    private bool _backgroundServiceRunning = false;
     private readonly IApiService _apiService;
-    private readonly BackgroundWorker _worker;
     public ObservableCollection<AcceptUser> FriendRequests { get; } = new();
     public ICommand AcceptCommand { get; }
     public ICommand RejectCommand { get; }
@@ -23,7 +23,6 @@ public class AcceptViewModel : ViewModelBase
     public AcceptViewModel(IApiService apiService)
     {
         _apiService = apiService;
-        _worker = new BackgroundWorker();
 
         AcceptCommand = new Command<string>(Accept);
         RejectCommand = new Command<string>(Reject);
@@ -38,7 +37,9 @@ public class AcceptViewModel : ViewModelBase
 
     public void RunApiService()
     {
-        var t = Task.Factory.StartNew(RefreshLoop, TaskCreationOptions.LongRunning);
+        if (_backgroundServiceRunning) return;
+        _backgroundServiceRunning = true;
+        Task.Factory.StartNew(RefreshLoop, TaskCreationOptions.LongRunning);
     }
 
     private async void RefreshLoop()
@@ -52,13 +53,14 @@ public class AcceptViewModel : ViewModelBase
     private async Task RefreshAsync()
     {
         var requests = await _apiService.GetFriendRequests();
+
         FriendRequests.Clear();
         foreach (var request in requests) {
-            var user = new AcceptUser { Username = request };
-            if (!FriendRequests.Contains(user)) {
-                FriendRequests.Add(user);
+            if (!FriendRequests.Contains(request)) {
+                FriendRequests.Add(request);
             }
         }
+
         IsRefreshing = false;
     }
 

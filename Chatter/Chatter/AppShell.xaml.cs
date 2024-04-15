@@ -1,5 +1,6 @@
 ﻿using Chatter.Services;
 using Chatter.ViewModels;
+using Chatter.Views;
 using Chatter.Views.Dashboard;
 using Chatter.Views.Startup;
 
@@ -23,6 +24,7 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(SearchView), typeof(SearchView));
         Routing.RegisterRoute(nameof(InviteView), typeof(InviteView));
         Routing.RegisterRoute(nameof(AcceptView), typeof(AcceptView));
+        Routing.RegisterRoute(nameof(ChatView), typeof(ChatView));
     }
 
 }

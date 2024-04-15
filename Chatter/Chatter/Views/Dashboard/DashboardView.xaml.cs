@@ -7,6 +7,7 @@ public partial class DashboardView : ContentPage
 	public DashboardView(DashboardViewModel viewModel)
 	{
 		InitializeComponent();
+		viewModel.Navigation = Navigation;
 		BindingContext = viewModel;
 	}
 }

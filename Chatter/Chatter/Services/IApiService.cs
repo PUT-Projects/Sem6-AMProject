@@ -4,6 +4,7 @@ namespace Chatter.Services;
 
 public interface IApiService
 {
+    string Username { get; }
     Task<bool> LoginUserAsync(Models.Startup.User user);
     Task<bool> RegisterUserAsync(Models.Startup.User user);
     Task<bool> AcceptFriendRequestAsync(string username);
@@ -14,5 +15,5 @@ public interface IApiService
     Task<(IEnumerable<string> friends, IEnumerable<SearchUser> users)> SearchFriendsAndUsersAsync(string searchQuery);
     Task<IEnumerable<string>> SearchFriendsAsync(string searchQuery);
     Task<IEnumerable<SearchUser>> SearchUsersAsync(string searchQuery);
-    Task<IEnumerable<string>> GetFriendRequests();
+    Task<IEnumerable<AcceptUser>> GetFriendRequests();
 }
