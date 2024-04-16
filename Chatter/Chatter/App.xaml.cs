@@ -12,7 +12,7 @@ public partial class App : Application
     {
         InitializeComponent();
 
-        var vm = serviceProvider.GetService<AppShellViewModel>();
-        MainPage = new AppShell(vm!);
+        var vm = serviceProvider.GetRequiredService<AppShellViewModel>();
+        MainPage = new AppShell(vm);
     }
 }

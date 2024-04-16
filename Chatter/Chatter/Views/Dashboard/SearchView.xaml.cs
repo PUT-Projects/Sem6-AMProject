@@ -12,9 +12,8 @@ public partial class SearchView : ContentPage
 		BindingContext = viewModel;
 	}
 
-    protected override void OnAppearing()
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
     {
-        base.OnAppearing();
         _viewModel.OnAppearing(searchBar);
     }
 

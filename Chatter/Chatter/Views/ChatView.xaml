@@ -22,30 +22,35 @@
 
         </CollectionView>
 
-        <Frame Grid.Row="1" Padding="0"
+        <Frame Grid.Row="1" Padding="0" CornerRadius="0" HeightRequest="52"
+               BorderColor="Transparent" VerticalOptions="FillAndExpand"
                BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}">
-            <HorizontalStackLayout>
-                <Frame CornerRadius="25" BorderColor="Transparent" Padding="0" 
-                       BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource OffBlack}}">
+            
+            <Grid ColumnDefinitions="60, *, 50" VerticalOptions="FillAndExpand">
+                <Frame Grid.Column="1" CornerRadius="25" BorderColor="Transparent" Padding="15,5" HeightRequest="40"
+                       VerticalOptions="Center" HorizontalOptions="FillAndExpand"
+                       BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource OffBlack}}">
 
-                    <Entry Placeholder="Type a message..."
+                    <Entry Placeholder="Type a message..." 
                        Text="{Binding NewMessage}"
                        TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
-                       BackgroundColor="Transparent"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center"
-                       FontSize="16"/>
+                       BackgroundColor="Transparent" Margin="0"
+                       HorizontalOptions="Start" VerticalOptions="FillAndExpand"
+                       FontSize="16" FontFamily="None"/>
                 </Frame>
-
-                <ImageButton Source="send.png" Margin="0,0,0,0" 
-                             HeightRequest="22" WidthRequest="22" 
-                             HorizontalOptions="End" VerticalOptions="Center"
-                             Command="{Binding SendMessageCommand}">
-                    <ImageButton.Behaviors>
+                <!--Command="{Binding SendMessageCommand}"-->
+                <Image Grid.Column="2"
+                             Source="send.png"
+                             HeightRequest="26" WidthRequest="26"
+                             HorizontalOptions="Center" VerticalOptions="Center">
+                    <Image.Behaviors>
                         <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
-                    </ImageButton.Behaviors>
-                </ImageButton>
-            </HorizontalStackLayout>
+                    </Image.Behaviors>
+                </Image>
+                <Button Grid.Column="2" Background="Transparent" ZIndex="1"
+                        HeightRequest="40" WidthRequest="40"
+                        Command="{Binding SendMessageCommand}" />
+            </Grid>
         </Frame>
 
     </Grid>

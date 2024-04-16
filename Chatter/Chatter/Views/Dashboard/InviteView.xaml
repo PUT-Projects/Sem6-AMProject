@@ -5,7 +5,7 @@
              Title="Invite new friends!">
 
     <VerticalStackLayout Spacing="5">
-        <Frame BackgroundColor="{StaticResource Gray600}" Padding="-8" Margin="15" CornerRadius="40" BorderColor="Transparent">
+        <Frame BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray600}}" Padding="-8" Margin="15" CornerRadius="40" BorderColor="Transparent">
             <SearchBar x:Name="searchBar" Placeholder="Search" Text="{Binding SearchQuery}" Margin="5" />
         </Frame>
 

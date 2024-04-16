@@ -15,6 +15,9 @@ using Chatter.Services;
 using Chatter.Repositories;
 using Chatter.ViewModels;
 using Chatter.Views;
+#if ANDROID
+using Android.Content.Res;
+#endif
 
 namespace Chatter;
 
@@ -40,7 +43,17 @@ public static class MauiProgram
         }
 
         ConfigureServices(builder.Services, builder.Configuration);
-        
+
+        Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping(nameof(Entry), (handler, view) => {
+#if ANDROID
+            handler.PlatformView.BackgroundTintList = ColorStateList.ValueOf(Android.Graphics.Color.Transparent);
+            handler.PlatformView.SetPadding(5, 0, 5, 0);
+#elif __IOS__
+        handler.PlatformView.BackgroundColor = UIKit.UIColor.Clear;
+        handler.PlatformView.BorderStyle = UIKit.UITextBorderStyle.None; 
+#endif
+        });
+
         return builder.Build();
     }
 
@@ -56,6 +69,7 @@ public static class MauiProgram
         services.AddSingleton<IApiService, ApiService>();
 
         // ViewModels
+        services.AddSingleton<AppShellViewModel>();
         services.AddSingleton<LoginViewModel>();
         services.AddSingleton<RegisterViewModel>();
         services.AddSingleton<DashboardViewModel>();
@@ -73,5 +87,6 @@ public static class MauiProgram
         services.AddSingleton<InviteView>();
         services.AddSingleton<AcceptView>();
         services.AddTransient<ChatView>();
+
     }
 }

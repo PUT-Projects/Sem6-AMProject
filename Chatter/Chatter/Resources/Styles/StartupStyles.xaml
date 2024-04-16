@@ -6,11 +6,11 @@
     
     <Style TargetType="Frame" x:Key="FrameStyle">
         <Setter Property="HeightRequest" Value="45" />
-        <Setter Property="Margin" Value="-20,0,0,0" />
+        <Setter Property="Margin" Value="-17,0,0,0" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="HasShadow" Value="True" />
         <Setter Property="HorizontalOptions" Value="FillAndExpand" />
-        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource OffBlack}}" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" />
         <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
     </Style>
     <Style TargetType="Frame" x:Key="IconFrameStyle">
@@ -19,7 +19,7 @@
         <Setter Property="HeightRequest" Value="56" />
         <Setter Property="WidthRequest" Value="56" />
         <Setter Property="CornerRadius" Value="28" />
-        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource OffBlack}}" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" />
         <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
     </Style>
     <Style TargetType="Image" x:Key="ImageStyle">
@@ -27,9 +27,11 @@
         <Setter Property="WidthRequest" Value="20" />
     </Style>
     <Style TargetType="Frame" x:Key="MessageFrameStyle">
-        <Setter Property="CornerRadius" Value="10" />
-        <Setter Property="Padding" Value="10" />
+        <Setter Property="CornerRadius" Value="17" />
+        <Setter Property="Padding" Value="6" />
         <Setter Property="Margin" Value="10" />
         <Setter Property="HasShadow" Value="True" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="VerticalOptions" Value="Center" />
     </Style>
 </ResourceDictionary>

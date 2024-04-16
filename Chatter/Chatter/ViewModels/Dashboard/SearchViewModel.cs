@@ -29,7 +29,7 @@ namespace Chatter.ViewModels.Dashboard
 
         public void OnAppearing(SearchBar searchBar)
         {
-            searchBar.Focus();
+            bool ok = searchBar.Focus();
         }
 
         private async void Search(string newValue)
