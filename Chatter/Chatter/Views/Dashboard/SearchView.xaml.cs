@@ -17,9 +17,21 @@ public partial class SearchView : ContentPage
         _viewModel.OnAppearing(searchBar);
     }
 
-    protected override bool OnBackButtonPressed()
+    protected override void OnNavigatedFrom(NavigatedFromEventArgs args)
     {
-        _viewModel.BackCommand.Execute(null);
-        return true;
+        _viewModel.OnAppearing(searchBar);
+    }
+
+    protected override void OnAppearing()
+    {
+        _viewModel.OnAppearing(searchBar);
+    }
+
+    public static SearchView? Create()
+    {
+        var searchView = Application.Current!.MainPage!
+            .Handler!.MauiContext!.Services.GetService<SearchView>();
+
+        return searchView;
     }
 }

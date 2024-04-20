@@ -1,4 +1,5 @@
-﻿using Chatter.Models.Dashboard;
+﻿using Chatter.Models;
+using Chatter.Models.Dashboard;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Behaviors;
 using CommunityToolkit.Maui.Core;
@@ -121,8 +122,12 @@ class ApiService : IApiService
 
         if (!response.IsSuccessStatusCode) {
             var content = await response.Content.ReadAsStringAsync();
-            var toast = Toast.Make(content, ToastDuration.Short);
-            await toast.Show();
+            Device.BeginInvokeOnMainThread(async () => {
+                var toast = Toast.Make(content, ToastDuration.Short);
+                await toast.Show();
+            });
+
+
             return false;
         }
 
@@ -210,11 +215,38 @@ class ApiService : IApiService
 
     public async Task<IEnumerable<AcceptUser>> GetFriendRequests()
     {
+        return await GetIEnumerableAsync<AcceptUser>($"{_settings.ApiUrl}/account/friends/requests");
+    }
+
+    public async Task<IEnumerable<GetMessageDto>> GetNewMessagesAsync()
+    {
+        return await GetIEnumerableAsync<GetMessageDto>($"{_settings.ApiUrl}/chatting/messages");
+    }
+
+    private async Task<IEnumerable<T>> GetIEnumerableAsync<T>(string url)
+    {
         using var client = _httpClientFactory.CreateClient();
         ConfigureHttpClient(client);
 
-        var requests = await client.GetFromJsonAsync<IEnumerable<AcceptUser>>($"{_settings.ApiUrl}/account/friends/requests");
+        try {
+            var data = await client.GetFromJsonAsync<IEnumerable<T>>(url);
 
-        return requests ?? [];
+            return data ?? [];
+        } 
+        catch (Exception ex) {
+            var toast = Toast.Make($"An error occurred while fetching the {nameof(IEnumerable<T>)}.", ToastDuration.Long);
+            await toast.Show();
+            return [];
+        }
+    }
+
+    public async Task<bool> SendMessageAsync(PostMessageDto message)
+    {
+        using var client = _httpClientFactory.CreateClient();
+        ConfigureHttpClient(client);
+
+        var response = await client.PostAsJsonAsync($"{_settings.ApiUrl}/chatting/message", message);
+
+        return await HandleResponse(response, "An error occurred while sending the message.");
     }
 }

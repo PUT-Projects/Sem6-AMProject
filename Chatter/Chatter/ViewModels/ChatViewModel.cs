@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
+using System.Runtime.CompilerServices;
 
 namespace Chatter.ViewModels;
 
@@ -15,48 +17,95 @@ public class ChatViewModel : ViewModelBase
 {
     private readonly IApiService _apiService;
     private readonly MessageRepository _repository;
-    public INavigation Navigation { get; set; }
+    private readonly MessageCollectorService _collectorService;
+    private readonly object _addMessageLock = new ();
     public string NewMessage { get; set; } = string.Empty;
     public Models.Dashboard.User User { get; set; } = new ();
-    public ObservableCollection<Message> Messages { get; } = [];
-    public ICommand SendMessageCommand { get; }
+    public ObservableCollection<Message> Messages { get; } = new ();
+    public IAsyncRelayCommand SendMessageCommand { get; }
+    public IAsyncRelayCommand LoadMoreMessagesCommand { get; }
     public ICommand BackCommand { get; }
-
-    public ChatViewModel(IApiService apiService)
+    public CollectionView CollectionView { get; set; }
+    public ChatViewModel(IApiService apiService, MessageRepository repository, MessageCollectorService collectorService)
     {
         _apiService = apiService;
-       // _repository = repository;
+        _repository = repository;
+        _collectorService = collectorService;
+        SendMessageCommand = new AsyncRelayCommand(SendMessage);
+        LoadMoreMessagesCommand = new AsyncRelayCommand(LoadMoreMessages);
         
-        SendMessageCommand = new Command(SendMessage);
-        AddMockMessages();
+        _collectorService.AddObserver(Callback);
     }
 
-
-
-    private async void SendMessage()
+    private async Task SendMessage()
     {
-        // 
+        if (string.IsNullOrWhiteSpace(NewMessage)) return;
+
+        var message = new PostMessageDto {
+            Content = NewMessage,
+            Receiver = User.Username,
+            TimeStamp = DateTime.Now,
+            Type = Message.MessageType.Text
+        };
+
+        await _apiService.SendMessageAsync(message);
+
+        NewMessage = string.Empty;
+
+        var uiMessage = new Message {
+            Content = message.Content,
+            Sender = _apiService.Username,
+            Receiver = message.Receiver,
+            TimeStamp = message.TimeStamp
+        };
+
+        await _repository.AddMessage(uiMessage);
+
+        lock (_addMessageLock) {
+            Messages.Insert(0, uiMessage);
+        }
+
+        await Task.Delay(5);
+
+        CollectionView.ScrollTo(0);
+
+    }
+    private async Task LoadMoreMessages()
+    {
+        var messages = await _repository.GetMessagesAsync(User.Username, Messages.Count + 50);
+
+        if (messages.Count() == Messages.Count) return;
+
+        lock (_addMessageLock) {
+            Messages.Clear();
+
+            foreach (var message in messages) {
+                Messages.Add(message);
+            }
+        }
     }
 
-    private void AddMockMessages()
+    private async Task Callback(IEnumerable<GetMessageDto> messages)
     {
-        Messages.Clear();
-        Messages.Add(new Message { Content = "Hello", Sender = _apiService.Username, TimeStamp = DateTime.Now });
-        Messages.Add(new Message { Content = "Hi", Sender = User.Username, TimeStamp = DateTime.Now });
-        Messages.Add(new Message { Content = "How are you?", Sender = _apiService.Username, TimeStamp = DateTime.Now });
-        Messages.Add(new Message { Content = "I'm good, thanks!", Sender = User.Username, TimeStamp = DateTime.Now });
-        Messages.Add(new Message { Content = "What are you up to?", Sender = _apiService.Username, TimeStamp = DateTime.Now });
-        Messages.Add(new Message { Content = "Just reading a book", Sender = User.Username, TimeStamp = DateTime.Now });
-        Messages.Add(new Message { Content = "Cool, which one?", Sender = _apiService.Username, TimeStamp = DateTime.Now });
-        Messages.Add(new Message { Content = "The one you recommended", Sender = User.Username, TimeStamp = DateTime.Now });
-        Messages.Add(new Message { Content = "Oh, that one is great!", Sender = _apiService.Username, TimeStamp = DateTime.Now });
-        Messages.Add(new Message { Content = "I know, right?", Sender = User.Username, TimeStamp = DateTime.Now });
-        Messages.Add(new Message { Content = "I'm glad you like it", Sender = _apiService.Username, TimeStamp = DateTime.Now });
-        Messages.Add(new Message { Content = "Thanks for the recommendation", Sender = User.Username, TimeStamp = DateTime.Now });
-        Messages.Add(new Message { Content = "You're welcome", Sender = _apiService.Username, TimeStamp = DateTime.Now });
-        Messages.Add(new Message { Content = "I have to go now", Sender = User.Username, TimeStamp = DateTime.Now });
-        Messages.Add(new Message { Content = "Talk to you later", Sender = _apiService.Username, TimeStamp = DateTime.Now });
-        Messages.Add(new Message { Content = "Bye", Sender = User.Username, TimeStamp = DateTime.Now });
-        Messages.Add(new Message { Content = "Bye", Sender = _apiService.Username, TimeStamp = DateTime.Now });
+        var uiMessages = messages.Select(m => new Message {
+            Content = m.Content,
+            Sender = m.Sender,
+            Receiver = _apiService.Username,
+            TimeStamp = m.TimeStamp,
+            Type = m.Type
+        });
+
+        lock (_addMessageLock) {
+            foreach (var message in uiMessages) {
+                Messages.Insert(0, message);
+            }
+        }
+
+        await Task.Delay(5);
+
+        CollectionView.ScrollTo(0);
+
     }
+
+
 }

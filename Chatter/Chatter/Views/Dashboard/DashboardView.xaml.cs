@@ -7,7 +7,12 @@ public partial class DashboardView : ContentPage
 	public DashboardView(DashboardViewModel viewModel)
 	{
 		InitializeComponent();
-		viewModel.Navigation = Navigation;
 		BindingContext = viewModel;
 	}
+
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+		var vm = (DashboardViewModel)BindingContext;
+		vm.RefreshCommand.Execute(null);
+    }
 }

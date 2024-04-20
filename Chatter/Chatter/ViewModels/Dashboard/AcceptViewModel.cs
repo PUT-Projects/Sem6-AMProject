@@ -1,5 +1,6 @@
 ﻿using Chatter.Models.Dashboard;
 using Chatter.Services;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,7 +19,7 @@ public class AcceptViewModel : ViewModelBase
     public ObservableCollection<AcceptUser> FriendRequests { get; } = new();
     public ICommand AcceptCommand { get; }
     public ICommand RejectCommand { get; }
-    public ICommand RefreshCommand { get; }
+    public IAsyncRelayCommand RefreshCommand { get; }
     public bool IsRefreshing { get; set; }
     public AcceptViewModel(IApiService apiService)
     {
@@ -26,7 +27,7 @@ public class AcceptViewModel : ViewModelBase
 
         AcceptCommand = new Command<string>(Accept);
         RejectCommand = new Command<string>(Reject);
-        RefreshCommand = new Command(async () => await RefreshAsync());
+        RefreshCommand = new AsyncRelayCommand(RefreshAsync);
         IsRefreshing = false;
         
         FriendRequests.Add(new AcceptUser { Username = "JohnDoe" });

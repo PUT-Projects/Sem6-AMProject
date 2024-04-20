@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using Chatter.Services;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,20 @@ namespace Chatter;
 
 public class DbSettings
 {
+    private readonly IApiService _apiService;
+    public DbSettings(IApiService apiService)
+    {
+        _apiService = apiService;
+    }
+
     public const SQLiteOpenFlags Flags = 
         SQLiteOpenFlags.ReadWrite |
         SQLiteOpenFlags.Create |
         SQLiteOpenFlags.SharedCache;
 
-    public static string FullPath => Path.Combine(FileSystem.AppDataDirectory, _filename);
-
-    private const string _filename = "chatter.db3";
+    public string FullPath 
+        => Path.Combine(
+                FileSystem.AppDataDirectory, 
+                $"chatter{_apiService.Username.GetDeterministicHashCode()}.db3"
+           );
 }

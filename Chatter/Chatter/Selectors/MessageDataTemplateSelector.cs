@@ -3,8 +3,10 @@ using Chatter.Models.Dashboard;
 using Chatter.Services;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Chatter.Selectors
@@ -24,20 +26,39 @@ namespace Chatter.Selectors
                 throw new ArgumentException("Item is not a Message");
             }
 
-            return msg.Sender == _apiService.Username ? GetMyTemplate() : GetFriendTemplate();
+            return msg.Sender == _apiService.Username ? GetMyTemplate(msg) : GetFriendTemplate(msg);
         }
 
-        private DataTemplate GetMyTemplate()
+        private DataTemplate GetMyTemplate(Message message)
         {
-            Application.Current!.Resources.TryGetValue("MyMessageStyle", out var template);
-            return (DataTemplate)template;
+            if (ContainsOnlyEmojis(message.Content)) {
+                Application.Current!.Resources.TryGetValue("MyMessageOnlyEmojiStyle", out var template);
+                return (DataTemplate)template;
+            }
+            else {
+                Application.Current!.Resources.TryGetValue("MyMessageStyle", out var template);
+                return (DataTemplate)template;
+            }
         }
 
-        private DataTemplate GetFriendTemplate()
+        private DataTemplate GetFriendTemplate(Message message)
         {
-            Application.Current!.Resources.TryGetValue("FriendMessageStyle", out var template);
-            return (DataTemplate)template;
+            if (ContainsOnlyEmojis(message.Content)) {
+                Application.Current!.Resources.TryGetValue("FriendMessageOnlyEmojiStyle", out var template);
+                return (DataTemplate)template;
+            }
+            else {
+                Application.Current!.Resources.TryGetValue("FriendMessageStyle", out var template);
+                return (DataTemplate)template;
+            }
         }
 
+
+        private const string _pattern = @"[\u2600-\u26FF\u2700-\u27BF\uD83C\uD83D\uD83E][\uDC00-\uDFFF]?|\uD83C[\uDDE6-\uDDFF]{1,2}|[\uD83D\uD83E][\uDC00-\uDFFF]";
+        private static Regex _regex = new(_pattern, RegexOptions.Compiled);
+        private static bool ContainsOnlyEmojis(string input)
+        {
+            return _regex.IsMatch(input);
+        }
     }
 }

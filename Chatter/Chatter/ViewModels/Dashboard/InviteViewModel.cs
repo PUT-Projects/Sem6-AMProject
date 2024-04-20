@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
+
 // import the vibrator for Android
 #if __ANDROID__
 using Android.OS;
@@ -22,17 +24,15 @@ public class InviteViewModel : ViewModelBase
     private readonly IApiService _apiService;
     private string _searchQuery = string.Empty;
     public ICommand BackCommand { get; }
-    public ICommand InviteCommand { get; }
-
+    public IAsyncRelayCommand InviteCommand { get; }
     public ObservableCollection<SearchUser> Users { get; } = new();
-
     public string SearchQuery { get => _searchQuery; set => Search(value); }
 
     public InviteViewModel(IApiService apiService)
     {
         _apiService = apiService;
         BackCommand = new Command(GoBack);
-        InviteCommand = new Command<string>(Invite);
+        InviteCommand = new AsyncRelayCommand<string>(Invite);
     }
 
     public void OnAppearing(SearchBar searchBar)
@@ -40,15 +40,15 @@ public class InviteViewModel : ViewModelBase
         searchBar.Focus();
     }
 
-    private async void Invite(string username)
+    private async Task Invite(string? username)
     {
-#if __ANDROID__
+#if __ANDROID__ 
         var vibrator = (Vibrator)Android.App.Application.Context.GetSystemService(Android.Content.Context.VibratorService)!;
         vibrator!.Vibrate(VibrationEffect.CreateOneShot(100, VibrationEffect.DefaultAmplitude));
 #endif
-        var toast = Toast.Make("Invitation sent to " + username);
+        var toast = Toast.Make("Invitation sent to " + username!);
         await toast.Show();
-        await _apiService.InviteFriendAsync(username);
+        await _apiService.InviteFriendAsync(username!);
     }
 
     private async void Search(string newValue)

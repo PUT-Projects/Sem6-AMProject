@@ -379,3 +379,5 @@ snapshots-diff/
 ChatterAPI/ChatterAPI/chatter.db
 ChatterAPI/ChatterAPI/chatter.db-shm
 ChatterAPI/ChatterAPI/chatter.db-wal
+
+chatter.db

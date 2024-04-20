@@ -16,7 +16,6 @@ namespace Chatter.ViewModels.Dashboard;
 public sealed class DashboardViewModel : ViewModelBase
 {
     private readonly IApiService _apiService;
-    public INavigation Navigation { get; set; }
     public ObservableCollection<User> Friends { get; } = [];
     public ICommand RefreshCommand { get; }
     public ICommand SearchCommand { get; }
@@ -34,7 +33,7 @@ public sealed class DashboardViewModel : ViewModelBase
     }
     private async void UserSelected(string username)
     {
-        var chatView = CreateChatView(username);
+        var chatView = ChatView.Create(username);
 
         if (chatView == null) {
             var toast = Toast.Make("ChatView not found");
@@ -42,12 +41,20 @@ public sealed class DashboardViewModel : ViewModelBase
             return;
         }
 
-        await Navigation.PushAsync(chatView);
+        await Shell.Current.Navigation.PushAsync(chatView);
     }
 
     private async void GoToSearchView()
     { 
-        await Shell.Current.GoToAsync($"//{nameof(SearchView)}");
+        var searchView = SearchView.Create();
+
+        if (searchView == null) {
+            var toast = Toast.Make("SearchView not found");
+            await toast.Show();
+            return;
+        }
+
+        await Shell.Current.Navigation.PushAsync(searchView);
     }
 
     private async void GoToInviteView()
@@ -66,18 +73,5 @@ public sealed class DashboardViewModel : ViewModelBase
         }
 
         IsRefreshing = false;
-    }
-
-    private ChatView? CreateChatView(string username)
-    {
-        var chatView = Application.Current!.MainPage!
-            .Handler!.MauiContext!.Services.GetService<ChatView>();
-
-        if (chatView is null) return null;
-
-        var vm = (ChatViewModel)chatView.BindingContext;
-        vm.User = new User { Username = username };
-
-        return chatView;
     }
 }

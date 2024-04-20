@@ -58,6 +58,10 @@
         <Grid RowDefinitions="5*,3*" HeightRequest="100" Padding="0"
               BackgroundColor="{AppThemeBinding Light='#eeeeee', Dark={StaticResource Gray950}}">
 
+            <Button Grid.RowSpan="2"
+                    BackgroundColor="Transparent" BorderColor="Transparent" CornerRadius="0"
+                    Command="{Binding BindingContext.SelectedCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}" 
+                    CommandParameter="{Binding Username}"/>
 
             <Image Grid.Row="0" Source="{Binding ImageUrl}" Margin="0,15,0,0" 
                    HorizontalOptions="Center" VerticalOptions="End"/>
@@ -70,8 +74,7 @@
 
     <DataTemplate x:Key="SearchUserStyle">
         <Grid RowDefinitions="5*,3*" ColumnDefinitions="2*,*,*" HeightRequest="100" Padding="0"
-              BackgroundColor="{AppThemeBinding Light='#eeeeee', Dark={StaticResource Gray950}}">
-
+              BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray950}}">
 
             <Image Grid.Row="0" Grid.ColumnSpan="2"
                    Source="{Binding ImageUrl}" Margin="20,15,0,0" 
@@ -97,6 +100,7 @@
                         CommandParameter="{Binding Username}"/>
                 </Frame.GestureRecognizers>
             </Frame>
+            
 
         </Grid>
     </DataTemplate>
@@ -152,23 +156,49 @@
     </DataTemplate>
 
     <DataTemplate x:Key="MyMessageStyle">
-        <Frame Style="{StaticResource MessageFrameStyle}" 
-               HorizontalOptions="End" VerticalOptions="Center"
+        <Frame Style="{StaticResource MessageFrameStyle}" Margin="15,5,60,5"
+               HorizontalOptions="Start" VerticalOptions="Center"
                BorderColor="{AppThemeBinding Light={StaticResource PrimaryDark}, Dark={StaticResource Primary}}"
                BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryDark}, Dark={StaticResource Primary}}">
 
-            <Label Text="{Binding Content}" HorizontalOptions="Start" LineBreakMode="WordWrap" Padding="5,0,5,0" />
+            <Label Text="{Binding Content}" FontSize="15" Rotation="180"
+                   HorizontalOptions="Start" LineBreakMode="WordWrap" Padding="5,0,5,0" />
+
+        </Frame>
+    </DataTemplate>
+
+    <DataTemplate x:Key="MyMessageOnlyEmojiStyle">
+        <Frame Style="{StaticResource MessageFrameStyle}" Margin="15,0,60,0" Padding="0"
+               HorizontalOptions="Start" VerticalOptions="Center"
+               BorderColor="Transparent"
+               BackgroundColor="Transparent">
+
+            <Label Text="{Binding Content}" FontSize="32" Rotation="180"
+                   HorizontalOptions="Start" LineBreakMode="WordWrap" Padding="0" />
 
         </Frame>
     </DataTemplate>
 
     <DataTemplate x:Key="FriendMessageStyle">
-        <Frame Style="{StaticResource MessageFrameStyle}"
-               HorizontalOptions="Start" VerticalOptions="Center"
+        <Frame Style="{StaticResource MessageFrameStyle}" Margin="60,5,15,5"
+               HorizontalOptions="End" VerticalOptions="Center"
                BorderColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray600}}"
                BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray600}}">
             
-            <Label Text="{Binding Content}" HorizontalOptions="Start" LineBreakMode="WordWrap" Padding="5,0,5,0" />
+            <Label Text="{Binding Content}" FontSize="15" Rotation="180"
+                   HorizontalOptions="End" LineBreakMode="WordWrap" Padding="5,0,5,0" />
+        </Frame>
+    </DataTemplate>
+
+    <DataTemplate x:Key="FriendMessageOnlyEmojiStyle">
+        <Frame Style="{StaticResource MessageFrameStyle}" Margin="60,0,15,0" Padding="0"
+               HorizontalOptions="End" VerticalOptions="Center"
+               BorderColor="Transparent"
+               BackgroundColor="Transparent">
+
+            <Label Text="{Binding Content}" FontSize="32" Rotation="180"
+                   HorizontalOptions="Start" LineBreakMode="WordWrap" Padding="0" />
+
         </Frame>
     </DataTemplate>
 

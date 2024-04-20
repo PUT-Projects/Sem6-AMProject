@@ -10,25 +10,31 @@ namespace Chatter.Repositories;
 
 public class MessageRepository : IDisposable
 {
-    private readonly ISQLiteAsyncConnection _connection;
-    public MessageRepository()
+    private readonly DbSettings _dbSettings;
+    private ISQLiteAsyncConnection _connection;
+    public MessageRepository(DbSettings dbSettings)
     {
-        _connection = new SQLiteAsyncConnection(DbSettings.FullPath, DbSettings.Flags);
+        _dbSettings = dbSettings;
 
+        UpdateConnection();
+    }
+
+    public void UpdateConnection()
+    {
+        _connection = new SQLiteAsyncConnection(_dbSettings.FullPath, DbSettings.Flags);
         _connection.CreateTableAsync<Message>().Wait();
     }
 
     public async Task AddMessage(Message message)
     {
-        await _connection.InsertAsync(message);
+        int res = await _connection.InsertAsync(message);
     }
 
-    public async Task<IEnumerable<Message>> GetMessagesAsync(string sender, int count = 50)
+    public async Task<List<Message>> GetMessagesAsync(string sender, int count = 2)
     {
-        return await _connection
-            .Table<Message>()
-            .Where(m => m.Sender == sender)
-            .OrderBy(m => m.TimeStamp)
+        return await _connection.Table<Message>()
+            .Where(m => m.Sender == sender || m.Receiver == sender)
+            .OrderByDescending(m => m.TimeStamp)
             .Take(count)
             .ToListAsync();
     }

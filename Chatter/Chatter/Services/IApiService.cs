@@ -1,4 +1,5 @@
-﻿using Chatter.Models.Dashboard;
+﻿using Chatter.Models;
+using Chatter.Models.Dashboard;
 
 namespace Chatter.Services;
 
@@ -16,4 +17,6 @@ public interface IApiService
     Task<IEnumerable<string>> SearchFriendsAsync(string searchQuery);
     Task<IEnumerable<SearchUser>> SearchUsersAsync(string searchQuery);
     Task<IEnumerable<AcceptUser>> GetFriendRequests();
+    Task<IEnumerable<GetMessageDto>> GetNewMessagesAsync();
+    Task<bool> SendMessageAsync(PostMessageDto message);
 }

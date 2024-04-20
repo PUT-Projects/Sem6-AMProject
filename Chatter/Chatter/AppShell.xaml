@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:Chatter"
     xmlns:startup="clr-namespace:Chatter.Views.Startup"
     xmlns:dashboard="clr-namespace:Chatter.Views.Dashboard"
+    xmlns:views="clr-namespace:Chatter.Views"
     xmlns:models="clr-namespace:Chatter.Models"
     Shell.FlyoutBehavior="Flyout"
     Shell.TabBarIsVisible="False"
@@ -24,11 +25,6 @@
         Title="Register View" FlyoutItemIsVisible="False" Shell.FlyoutBehavior="Disabled"
         ContentTemplate="{DataTemplate startup:RegisterView}"
         Route="RegisterView" />
-
-    <ShellContent
-        Title="Search View" FlyoutItemIsVisible="False" Shell.FlyoutBehavior="Disabled"
-        ContentTemplate="{DataTemplate dashboard:SearchView}"
-        Route="SearchView" />
 
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
         <ShellContent

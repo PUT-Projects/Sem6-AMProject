@@ -17,9 +17,12 @@ public class Message
     [PrimaryKey, AutoIncrement]
     public int Id { get; set; }
     public string Content { get; set; }
+    [NotNull]
     public MessageType Type { get; set; }
     [Indexed, NotNull]
     public string Sender { get; set; }
+    [Indexed, NotNull]
+    public string Receiver { get; set; }
     [NotNull]
     public DateTime TimeStamp { get; set; }
 }

@@ -66,14 +66,16 @@ public static class MauiProgram
         services.AddHttpClient();
         services.AddTransient<MessageRepository>();
 
+        services.AddSingleton<MessageCollectorService>();
         services.AddSingleton<IApiService, ApiService>();
+        services.AddSingleton<DbSettings>();
 
         // ViewModels
         services.AddSingleton<AppShellViewModel>();
         services.AddSingleton<LoginViewModel>();
         services.AddSingleton<RegisterViewModel>();
         services.AddSingleton<DashboardViewModel>();
-        services.AddSingleton<SearchViewModel>();
+        services.AddTransient<SearchViewModel>();
         services.AddSingleton<InviteViewModel>();
         services.AddSingleton<AcceptViewModel>();
         services.AddTransient<ChatViewModel>();
@@ -83,7 +85,7 @@ public static class MauiProgram
         services.AddSingleton<LoginView>();
         services.AddSingleton<RegisterView>();
         services.AddSingleton<DashboardView>();
-        services.AddSingleton<SearchView>();
+        services.AddTransient<SearchView>();
         services.AddSingleton<InviteView>();
         services.AddSingleton<AcceptView>();
         services.AddTransient<ChatView>();

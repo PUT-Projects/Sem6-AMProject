@@ -16,6 +16,7 @@ namespace Chatter.ViewModels.Startup;
 public sealed class LoginViewModel : ViewModelBase
 {
     private readonly IApiService _apiService;
+    private readonly MessageCollectorService _collectorService;
 
     public User User { get; set; }
     public ICommand LoginCommand { get; }
@@ -23,8 +24,11 @@ public sealed class LoginViewModel : ViewModelBase
     public ICommand RegisterCommand { get; }
     public bool IsLoading { get; set; }
 
-    public LoginViewModel(IApiService apiService)
+    public LoginViewModel(IApiService apiService, MessageCollectorService collectorService)
     {
+        _apiService = apiService;
+        _collectorService = collectorService;
+
         User = new User() {
             Username = "kubspl",
             Password = "zaqzaq"
@@ -32,7 +36,6 @@ public sealed class LoginViewModel : ViewModelBase
 
         LoginCommand = new Command(Login);
         RegisterCommand = new Command(Register);
-        _apiService = apiService;
     }
 
     private async void Login()
@@ -41,6 +44,8 @@ public sealed class LoginViewModel : ViewModelBase
         bool success = await _apiService.LoginUserAsync(User);
         IsLoading = false;
         if (success) {
+            _collectorService.StartCollectingMessages();
+
             await Shell.Current.GoToAsync($"//{nameof(DashboardView)}");
         } else {
 

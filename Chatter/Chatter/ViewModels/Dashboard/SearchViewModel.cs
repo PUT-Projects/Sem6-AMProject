@@ -8,6 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
+using Chatter.Views;
+using CommunityToolkit.Maui.Alerts;
 
 namespace Chatter.ViewModels.Dashboard
 {
@@ -15,8 +18,7 @@ namespace Chatter.ViewModels.Dashboard
     {
         private readonly IApiService _apiService;
         private string _searchQuery = string.Empty;
-        public ICommand BackCommand { get; }
-
+        public IAsyncRelayCommand<string> SelectedCommand { get; }
         public ObservableCollection<User> Friends { get; } = new();
 
         public string SearchQuery { get => _searchQuery; set => Search(value); }
@@ -24,7 +26,22 @@ namespace Chatter.ViewModels.Dashboard
         public SearchViewModel(IApiService apiService)
         {
             _apiService = apiService;
-            BackCommand = new Command(GoBack);
+            SelectedCommand = new AsyncRelayCommand<string>(UserSelected);
+        }
+
+        private async Task UserSelected(string? username)
+        {
+            if (string.IsNullOrWhiteSpace(username)) return;
+
+            var chatView = ChatView.Create(username);
+
+            if (chatView == null) {
+                var toast = Toast.Make("ChatView not found");
+                await toast.Show();
+                return;
+            }
+            
+            await Shell.Current.Navigation.PushAsync(chatView);
         }
 
         public void OnAppearing(SearchBar searchBar)
@@ -50,11 +67,6 @@ namespace Chatter.ViewModels.Dashboard
                 var friend = new User { Username = username };
                 Friends.Add(friend);
             }
-        }
-
-        private async void GoBack()
-        {
-            await Shell.Current.GoToAsync($"//{nameof(DashboardView)}");
         }
     }
 }
