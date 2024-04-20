@@ -22,8 +22,7 @@ public class ChattingController : ControllerBase
     [HttpGet("messages")]
     public async Task<IActionResult> GetMessages()
     {
-        var userId = Guid.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
-        var messages = await _service.GetAwaitingMessages(userId);
+        var messages = await _service.GetAwaitingMessages(UserId);
 
         return Ok(messages);
     }
@@ -31,10 +30,11 @@ public class ChattingController : ControllerBase
     [HttpPost("message")]
     public async Task<IActionResult> SendMessage([FromBody] MessageDto message)
     {
-        var userId = Guid.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
-        await _service.SendMessage(userId, message);
+        await _service.SendMessage(UserId, Username, message);
 
         return Ok();
     }
 
+    private Guid UserId => Guid.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
+    private string Username => User.Claims.First(c => c.Type == ClaimTypes.Name).Value;
 }
