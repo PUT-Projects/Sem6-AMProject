@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using System.Runtime.CompilerServices;
+using Chatter.Entities;
 
 namespace Chatter.ViewModels;
 
@@ -17,7 +18,7 @@ public class ChatViewModel : ViewModelBase
 {
     private readonly IApiService _apiService;
     private readonly MessageRepository _repository;
-    private readonly MessageCollectorService _collectorService;
+    private readonly IMessageCollector _messageCollector;
     private readonly object _addMessageLock = new ();
     public string NewMessage { get; set; } = string.Empty;
     public Models.Dashboard.User User { get; set; } = new ();
@@ -26,15 +27,23 @@ public class ChatViewModel : ViewModelBase
     public IAsyncRelayCommand LoadMoreMessagesCommand { get; }
     public ICommand BackCommand { get; }
     public CollectionView CollectionView { get; set; }
-    public ChatViewModel(IApiService apiService, MessageRepository repository, MessageCollectorService collectorService)
+    public ChatViewModel(IApiService apiService, MessageRepository repository, IMessageCollector messageCollector)
     {
         _apiService = apiService;
         _repository = repository;
-        _collectorService = collectorService;
+        _messageCollector = messageCollector;
         SendMessageCommand = new AsyncRelayCommand(SendMessage);
         LoadMoreMessagesCommand = new AsyncRelayCommand(LoadMoreMessages);
-        
-        _collectorService.AddObserver(Callback);
+    }
+    public void OnLoad()
+    {
+        _messageCollector.AddObserver(Callback);
+        _messageCollector.MuteNotificationsFrom(User.Username);
+    }
+    public void OnExit()
+    {
+        _messageCollector.RemoveObserver(Callback);
+        _messageCollector.UnMute();
     }
 
     private async Task SendMessage()
@@ -95,16 +104,15 @@ public class ChatViewModel : ViewModelBase
             Type = m.Type
         });
 
-        lock (_addMessageLock) {
-            foreach (var message in uiMessages) {
-                Messages.Insert(0, message);
+        MainThread.BeginInvokeOnMainThread(() => {
+            lock (_addMessageLock) {
+                foreach (var message in uiMessages) {
+                    Messages.Insert(0, message);
+                }
             }
-        }
 
-        await Task.Delay(5);
-
-        CollectionView.ScrollTo(0);
-
+            CollectionView.ScrollTo(0);
+        });
     }
 
 

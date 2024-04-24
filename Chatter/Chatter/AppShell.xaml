@@ -21,11 +21,6 @@
         ContentTemplate="{DataTemplate startup:LoginView}"
         Route="LoginView" />
 
-    <ShellContent
-        Title="Register View" FlyoutItemIsVisible="False" Shell.FlyoutBehavior="Disabled"
-        ContentTemplate="{DataTemplate startup:RegisterView}"
-        Route="RegisterView" />
-
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
         <ShellContent
             Title="Contacts" Icon="{Static models:Icons.Chats}"

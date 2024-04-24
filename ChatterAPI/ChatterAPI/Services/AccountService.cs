@@ -99,27 +99,28 @@ public class AccountService
 
     public async Task<IEnumerable<FriendDto>> GetFriends(Guid userId)
     {
-        var friendIds = _context.FriendPairs
-            .Where(fp => fp.UserId == userId && fp.FriendshipStatus == FriendPair.Status.Friends)
-            .Select(fp => fp.FriendId);
+        var friends = await _context.Users
+            .Where(u => _context.FriendPairs
+                .Where(fp => fp.UserId == userId && fp.FriendshipStatus == FriendPair.Status.Friends)
+                .Select(fp => fp.FriendId)
+                .Contains(u.Id))
+            .Select(u => new FriendDto { Username = u.Username })
+            .ToListAsync();
 
-        return await _context.Users.Where(u => friendIds.Contains(u.Id)).Select(u => new FriendDto { Username = u.Username }).ToListAsync();
+        return friends;
     }
 
     public async Task<IEnumerable<FriendRequestDto>> GetFriendRequests(Guid userId)
     {
-        var friendIds = _context.FriendPairs
-            .Where(fp => fp.FriendId == userId && fp.FriendshipStatus == FriendPair.Status.Invited)
-            .Select(fp => fp.UserId);
-
-
-        var result = await _context.Users
-            .Where(u => friendIds.Contains(u.Id))
+        var friendRequests = await _context.Users
+            .Where(u => _context.FriendPairs
+                .Any(fp => fp.FriendId == userId && fp.UserId == u.Id && fp.FriendshipStatus == FriendPair.Status.Invited))
             .Select(u => new FriendRequestDto { Username = u.Username })
             .ToListAsync();
 
-        return result;
+        return friendRequests;
     }
+
 
     public async Task AddFriend(Guid userId, FriendRequestDto user)
     {
@@ -241,54 +242,29 @@ public class AccountService
             .AnyAsync(fp => fp.UserId == friendId && fp.FriendId == userId && fp.FriendshipStatus == FriendPair.Status.Invited);
     }
 
-    public async Task<bool> UserExists(string username)
-    {
-        return await _context.Users.AnyAsync(u => u.Username == username);
-    }
-
-    public async Task<bool> UserExists(Guid id)
-    {
-        return await _context.Users.AnyAsync(u => u.Id == id);
-    }
-
-    public async Task<bool> FriendPairExists(Guid userId, Guid friendId)
-    {
-        return await _context.FriendPairs.AnyAsync(fp => fp.UserId == userId && fp.FriendId == friendId);
-    }
-
-    public async Task<bool> FriendPairExists(Guid userId, Guid friendId, FriendPair.Status status)
-    {
-        return await _context.FriendPairs.AnyAsync(fp => fp.UserId == userId && fp.FriendId == friendId && fp.FriendshipStatus == status);
-    }
-
     public async Task<IEnumerable<string>> SearchFriends(Guid userId, string username)
     {
-        var friendIds = _context.FriendPairs
-            .Where(fp => fp.UserId == userId && fp.FriendshipStatus == FriendPair.Status.Friends)
-            .Select(fp => fp.FriendId);
-
         var friends = await _context.Users
-            .Where(u => friendIds.Contains(u.Id) && u.Username.ToLower().StartsWith(username))
+            .Where(u => _context.FriendPairs
+                .Where(fp => fp.UserId == userId && fp.FriendshipStatus == FriendPair.Status.Friends)
+                .Select(fp => fp.FriendId)
+                .Contains(u.Id) && u.Username.ToLower().StartsWith(username))
             .Select(u => u.Username)
             .ToListAsync();
 
         return friends;
     }
 
+
     public async Task<IEnumerable<SearchUserDto>> SearchUsers(Guid userId, string username)
     {
-        // search users that arent invited or friends
-        var friendIds = _context.FriendPairs
-            .Where(fp => fp.UserId == userId && fp.FriendshipStatus == FriendPair.Status.Friends)
-            .Select(fp => fp.FriendId);
-
-        var invitedIds = _context.FriendPairs
-            .Where(fp => fp.UserId == userId && fp.FriendshipStatus == FriendPair.Status.Invited)
-            .Select(fp => fp.FriendId);
-
         var users = await _context.Users
-            .Where(u => !friendIds.Contains(u.Id) && u.Username.ToLower().StartsWith(username))
-            .Select(u => new SearchUserDto { Username = u.Username, IsInvited = invitedIds.Contains(u.Id) })
+            .Where(u => !_context.FriendPairs
+                .Any(fp => fp.UserId == userId &&
+                           (fp.FriendshipStatus == FriendPair.Status.Friends || fp.FriendshipStatus == FriendPair.Status.Invited) &&
+                           fp.FriendId == u.Id) &&
+                         EF.Functions.Like(u.Username, username + "%"))
+            .Select(u => new SearchUserDto { Username = u.Username, IsInvited = false })
             .ToListAsync();
 
         return users;

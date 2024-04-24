@@ -22,4 +22,12 @@ public partial class RegisterView : ContentPage
 		var viewModel = (RegisterViewModel)BindingContext;
 		viewModel.UpdateColors(entryFrame, entryIconFrame, entryIcon);
     }
+
+	public static RegisterView Create()
+	{
+        var registerView = Application.Current!.MainPage!
+            .Handler!.MauiContext!.Services.GetRequiredService<RegisterView>();
+
+		return registerView;
+    }
 }

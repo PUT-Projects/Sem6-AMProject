@@ -1,4 +1,7 @@
-﻿using Chatter.Services;
+﻿#if ANDROID
+using Chatter.Platforms.Android;
+#endif
+using Chatter.Services;
 using Chatter.Views.Startup;
 using System;
 using System.Collections.Generic;
@@ -12,19 +15,19 @@ namespace Chatter.ViewModels;
 public class AppShellViewModel : ViewModelBase
 {
     private readonly IApiService _apiService;
-    private readonly MessageCollectorService _collectorService;
 
+    private readonly IMessageCollector _messageCollector;
     public ICommand LogoutCommand { get; }
-    public AppShellViewModel(IApiService apiService, MessageCollectorService collectorService)
+    public AppShellViewModel(IApiService apiService, IMessageCollector messageCollector)
     {
         _apiService = apiService;
-        _collectorService = collectorService;
+        _messageCollector = messageCollector;
         LogoutCommand = new Command(Logout);
     }
 
     private async void Logout()
     {
-        _collectorService.Stop();
+        _messageCollector.Stop();
 
         await _apiService.Logout();
         Shell.Current.FlyoutIsPresented = false;

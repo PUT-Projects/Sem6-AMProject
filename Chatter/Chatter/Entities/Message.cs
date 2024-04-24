@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Chatter.Models;
+namespace Chatter.Entities;
 [Table("Messages")]
 public class Message
 {

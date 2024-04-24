@@ -1,4 +1,4 @@
-﻿using Chatter.Models;
+﻿using Chatter.Entities;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ namespace Chatter.Repositories;
 public class MessageRepository : IDisposable
 {
     private readonly DbSettings _dbSettings;
-    private ISQLiteAsyncConnection _connection;
+    private ISQLiteAsyncConnection? _connection;
     public MessageRepository(DbSettings dbSettings)
     {
         _dbSettings = dbSettings;
@@ -21,18 +21,23 @@ public class MessageRepository : IDisposable
 
     public void UpdateConnection()
     {
+        _connection?.CloseAsync().Wait();
         _connection = new SQLiteAsyncConnection(_dbSettings.FullPath, DbSettings.Flags);
         _connection.CreateTableAsync<Message>().Wait();
     }
 
     public async Task AddMessage(Message message)
     {
-        int res = await _connection.InsertAsync(message);
+        await _connection!.InsertAsync(message);
+    }
+    public async Task AddMessages(IEnumerable<Message> messages)
+    {
+        await _connection!.InsertAllAsync(messages);
     }
 
     public async Task<List<Message>> GetMessagesAsync(string sender, int count = 2)
     {
-        return await _connection.Table<Message>()
+        return await _connection!.Table<Message>()
             .Where(m => m.Sender == sender || m.Receiver == sender)
             .OrderByDescending(m => m.TimeStamp)
             .Take(count)
@@ -57,7 +62,7 @@ public class MessageRepository : IDisposable
         if (_disposed) return;
 
         if (disposing) {
-            _connection.CloseAsync().Wait();
+            _connection?.CloseAsync().Wait();
 
             _disposed = true;
         }

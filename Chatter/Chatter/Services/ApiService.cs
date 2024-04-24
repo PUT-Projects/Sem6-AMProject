@@ -57,6 +57,9 @@ class ApiService : IApiService
 
         _jwtToken = "Bearer " + content;
         Username = user.Username;
+#if ANDROID
+        Platforms.Android.AndroidServiceManager.Username = user.Username;
+#endif
         return true;
     }
 
@@ -220,6 +223,9 @@ class ApiService : IApiService
 
     public async Task<IEnumerable<GetMessageDto>> GetNewMessagesAsync()
     {
+        if (string.IsNullOrEmpty(Username)) {
+            return Enumerable.Empty<GetMessageDto>();
+        }
         return await GetIEnumerableAsync<GetMessageDto>($"{_settings.ApiUrl}/chatting/messages");
     }
 

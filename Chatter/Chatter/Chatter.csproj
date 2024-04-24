@@ -349,4 +349,8 @@
 	  </MauiXaml>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Platforms\Android\Resources\drawable\icons\" />
+	</ItemGroup>
+
 </Project>

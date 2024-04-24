@@ -5,18 +5,20 @@ namespace Chatter.Views;
 
 public partial class ChatView : ContentPage
 {
+    private ChatViewModel _viewModel => (ChatViewModel)BindingContext;
 	public ChatView(ChatViewModel viewModel)
 	{
 		InitializeComponent();
 		viewModel.CollectionView = collectionView;
 		BindingContext = viewModel;
-
 	}
-
-    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    protected override void OnDisappearing()
+    {
+        _viewModel.OnExit();
+    }
+    protected override void OnAppearing()
 	{
-		var vm = (ChatViewModel)BindingContext;
-		//vm.ScrollToBottom();
+        _viewModel.OnLoad();
     }
 
     public static ChatView? Create(string username)

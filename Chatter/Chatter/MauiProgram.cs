@@ -66,29 +66,39 @@ public static class MauiProgram
         services.AddHttpClient();
         services.AddTransient<MessageRepository>();
 
-        services.AddSingleton<MessageCollectorService>();
         services.AddSingleton<IApiService, ApiService>();
         services.AddSingleton<DbSettings>();
+
+        AddMessageCollectors(services);
 
         // ViewModels
         services.AddSingleton<AppShellViewModel>();
         services.AddSingleton<LoginViewModel>();
-        services.AddSingleton<RegisterViewModel>();
         services.AddSingleton<DashboardViewModel>();
-        services.AddTransient<SearchViewModel>();
         services.AddSingleton<InviteViewModel>();
         services.AddSingleton<AcceptViewModel>();
+
+        services.AddTransient<RegisterViewModel>();
+        services.AddTransient<SearchViewModel>();
         services.AddTransient<ChatViewModel>();
 
 
         // Views
         services.AddSingleton<LoginView>();
-        services.AddSingleton<RegisterView>();
         services.AddSingleton<DashboardView>();
-        services.AddTransient<SearchView>();
         services.AddSingleton<InviteView>();
         services.AddSingleton<AcceptView>();
+        
+        services.AddTransient<RegisterView>();
+        services.AddTransient<SearchView>();
         services.AddTransient<ChatView>();
 
+    }
+
+    private static void AddMessageCollectors(IServiceCollection services)
+    {
+#if ANDROID
+        services.AddSingleton<IMessageCollector, Platforms.Android.AndroidMessageCollector>();
+#endif
     }
 }

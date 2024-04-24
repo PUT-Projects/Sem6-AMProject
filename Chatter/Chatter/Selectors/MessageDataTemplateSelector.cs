@@ -1,4 +1,4 @@
-﻿using Chatter.Models;
+﻿using Chatter.Entities;
 using Chatter.Models.Dashboard;
 using Chatter.Services;
 using System;
