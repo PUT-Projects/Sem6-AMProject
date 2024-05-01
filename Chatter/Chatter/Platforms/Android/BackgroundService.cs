@@ -44,7 +44,7 @@ public class BackgroundService : Service
 
         StartForeground(id, notification);
 
-        timer = new Timer(Timer_Elapsed, builder, 0, 1000);
+        timer = new Timer(Timer_Elapsed, builder, 0, 1000000);
 
         AndroidServiceManager.MessageCollector!.AddObserver(OnNewMessages);
 
@@ -78,7 +78,7 @@ public class BackgroundService : Service
         StopSelf();
     }
 
-    private async Task OnNewMessages(IEnumerable<GetMessageDto> messages)
+    private async Task OnNewMessages(IEnumerable<DecryptedMessage> messages)
     {
         // select usernames from messages
         var usernames = messages.Select(m => m.Sender).Distinct();

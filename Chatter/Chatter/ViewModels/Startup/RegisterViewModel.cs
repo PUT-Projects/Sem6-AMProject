@@ -1,4 +1,6 @@
-﻿using Chatter.Models.Startup;
+﻿using Chatter.Entities;
+using Chatter.Models.Startup;
+using Chatter.Repositories;
 using Chatter.Services;
 using Chatter.Views.Dashboard;
 using Chatter.Views.Startup;
@@ -19,14 +21,16 @@ namespace Chatter.ViewModels.Startup;
 public sealed class RegisterViewModel : ViewModelBase
 {
     private readonly IApiService _apiService;
+    private readonly UserDataRepository _userDataRepository;
 
     public RegisterUser User { get; set; }
     public ICommand RegisterCommand { get; }
     public ICommand BackCommand { get; }
     public bool IsLoading { get; set; }
-    public RegisterViewModel(IApiService apiService)
+    public RegisterViewModel(IApiService apiService, UserDataRepository userDataRepository)
     {
         _apiService = apiService;
+        _userDataRepository = userDataRepository;
 
         User = new RegisterUser() {
             Username = "kubspl",
@@ -59,13 +63,23 @@ public sealed class RegisterViewModel : ViewModelBase
         if (!await AnalyzeInputAndHighlightErrorsAsync()) return;
 
         IsLoading = true;
+        string rsaCreds = CryptographyService.GenerateNewKeyPairXml();
+        User.PublicKey = rsaCreds;
+
         if (!await _apiService.RegisterUserAsync(User)) {
             // registration failed
             IsLoading = false;
             return;
         }
 
+
         await _apiService.LoginUserAsync(User);
+
+        _userDataRepository.AddUserData(rsaCreds);
+
+        var toast = Toast.Make("RSA keys created!", ToastDuration.Long, 15);
+        await toast.Show();
+
         ClearUser();
         IsLoading = false;
 

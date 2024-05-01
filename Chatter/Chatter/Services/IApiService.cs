@@ -7,7 +7,7 @@ public interface IApiService
 {
     string Username { get; }
     Task<bool> LoginUserAsync(Models.Startup.User user);
-    Task<bool> RegisterUserAsync(Models.Startup.User user);
+    Task<bool> RegisterUserAsync(Models.Startup.RegisterUser user);
     Task<bool> AcceptFriendRequestAsync(string username);
     Task<bool> RejectFriendRequestAsync(string username);
     Task<IEnumerable<User>> GetFriendsAsync();
@@ -19,4 +19,5 @@ public interface IApiService
     Task<IEnumerable<AcceptUser>> GetFriendRequests();
     Task<IEnumerable<GetMessageDto>> GetNewMessagesAsync();
     Task<bool> SendMessageAsync(PostMessageDto message);
+    Task<string> GetPublicKey(string username);
 }

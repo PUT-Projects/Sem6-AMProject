@@ -19,6 +19,7 @@ public class ChatViewModel : ViewModelBase
     private readonly IApiService _apiService;
     private readonly MessageRepository _repository;
     private readonly IMessageCollector _messageCollector;
+    private readonly CryptographyService _cryptoService;
     private readonly object _addMessageLock = new ();
     public string NewMessage { get; set; } = string.Empty;
     public Models.Dashboard.User User { get; set; } = new ();
@@ -27,16 +28,19 @@ public class ChatViewModel : ViewModelBase
     public IAsyncRelayCommand LoadMoreMessagesCommand { get; }
     public ICommand BackCommand { get; }
     public CollectionView CollectionView { get; set; }
-    public ChatViewModel(IApiService apiService, MessageRepository repository, IMessageCollector messageCollector)
+    public ChatViewModel(IApiService apiService, MessageRepository repository, 
+                         IMessageCollector messageCollector, CryptographyService cryptoService)
     {
         _apiService = apiService;
         _repository = repository;
         _messageCollector = messageCollector;
+        _cryptoService = cryptoService;
         SendMessageCommand = new AsyncRelayCommand(SendMessage);
         LoadMoreMessagesCommand = new AsyncRelayCommand(LoadMoreMessages);
     }
-    public void OnLoad()
+    public async void OnLoad()
     {
+        _cryptoService.ReceiverXmlKey = await _apiService.GetPublicKey(User.Username);
         _messageCollector.AddObserver(Callback);
         _messageCollector.MuteNotificationsFrom(User.Username);
     }
@@ -50,8 +54,12 @@ public class ChatViewModel : ViewModelBase
     {
         if (string.IsNullOrWhiteSpace(NewMessage)) return;
 
+        var encryptedMessage = _cryptoService.EncryptMessage(NewMessage);
+
         var message = new PostMessageDto {
-            Content = NewMessage,
+            Content = encryptedMessage.Content,
+            Key = encryptedMessage.Key,
+            IV = encryptedMessage.IV,
             Receiver = User.Username,
             TimeStamp = DateTime.Now,
             Type = Message.MessageType.Text
@@ -59,14 +67,14 @@ public class ChatViewModel : ViewModelBase
 
         await _apiService.SendMessageAsync(message);
 
-        NewMessage = string.Empty;
-
         var uiMessage = new Message {
-            Content = message.Content,
+            Content = NewMessage,
             Sender = _apiService.Username,
             Receiver = message.Receiver,
             TimeStamp = message.TimeStamp
         };
+
+        NewMessage = string.Empty;
 
         await _repository.AddMessage(uiMessage);
 
@@ -94,7 +102,7 @@ public class ChatViewModel : ViewModelBase
         }
     }
 
-    private async Task Callback(IEnumerable<GetMessageDto> messages)
+    private async Task Callback(IEnumerable<DecryptedMessage> messages)
     {
         var uiMessages = messages.Select(m => new Message {
             Content = m.Content,

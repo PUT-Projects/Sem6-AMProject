@@ -9,8 +9,8 @@ namespace Chatter.Services;
 
 public interface IMessageCollector
 {
-    void AddObserver(Func<IEnumerable<GetMessageDto>, Task> observer);
-    void RemoveObserver(Func<IEnumerable<GetMessageDto>, Task> observer);
+    void AddObserver(Func<IEnumerable<DecryptedMessage>, Task> observer);
+    void RemoveObserver(Func<IEnumerable<DecryptedMessage>, Task> observer);
     void StartCollectingMessages();
     void MuteNotificationsFrom(string username);
     void UnMute();

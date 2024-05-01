@@ -22,7 +22,7 @@ public class MessageRepository : IDisposable
     public void UpdateConnection()
     {
         _connection?.CloseAsync().Wait();
-        _connection = new SQLiteAsyncConnection(_dbSettings.FullPath, DbSettings.Flags);
+        _connection = new SQLiteAsyncConnection(_dbSettings.MessagesDbPath, DbSettings.Flags);
         _connection.CreateTableAsync<Message>().Wait();
     }
 
@@ -32,7 +32,7 @@ public class MessageRepository : IDisposable
     }
     public async Task AddMessages(IEnumerable<Message> messages)
     {
-        await _connection!.InsertAllAsync(messages);
+        var res = await _connection!.InsertAllAsync(messages);
     }
 
     public async Task<List<Message>> GetMessagesAsync(string sender, int count = 2)

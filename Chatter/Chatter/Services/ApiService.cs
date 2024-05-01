@@ -27,7 +27,7 @@ class ApiService : IApiService
         _settings = settings;
     }
 
-    public async Task<bool> RegisterUserAsync(Models.Startup.User user)
+    public async Task<bool> RegisterUserAsync(Models.Startup.RegisterUser user)
     {
         using var client = _httpClientFactory.CreateClient();
 
@@ -254,5 +254,25 @@ class ApiService : IApiService
         var response = await client.PostAsJsonAsync($"{_settings.ApiUrl}/chatting/message", message);
 
         return await HandleResponse(response, "An error occurred while sending the message.");
+    }
+
+    public async Task<string> GetPublicKey(string username)
+    {
+        using var client = _httpClientFactory.CreateClient();
+        
+        ConfigureHttpClient(client);
+        try {
+            var response = await client.GetStringAsync($"{_settings.ApiUrl}/account/users/{username}/publickey");
+
+            if (response is null) return string.Empty;
+
+            return Encoding.UTF8.GetString(Convert.FromBase64String(response));
+        }
+        catch (Exception ex) {
+            var toast = Toast.Make("An error occurred while fetching the public key.", ToastDuration.Long);
+            await toast.Show();
+            return string.Empty;
+        
+        }
     }
 }

@@ -16,20 +16,23 @@ public class AndroidMessageCollector : IMessageCollector
 {
     private readonly IApiService _apiService;
     private readonly MessageRepository _repository;
-    private readonly List<Func<IEnumerable<GetMessageDto>, Task>> _observers = new();
-    public AndroidMessageCollector(IApiService apiService, MessageRepository repository)
+    private readonly CryptographyService _cryptoService;
+
+    private readonly List<Func<IEnumerable<DecryptedMessage>, Task>> _observers = new();
+    public AndroidMessageCollector(IApiService apiService, MessageRepository repository, CryptographyService cryptoService)
     {
         _apiService = apiService;
         _repository = repository;
+        _cryptoService = cryptoService;
         AndroidServiceManager.MessageCollector = this;
     }
 
-    public void AddObserver(Func<IEnumerable<GetMessageDto>, Task> observer)
+    public void AddObserver(Func<IEnumerable<DecryptedMessage>, Task> observer)
     {
         _observers.Add(observer);
     }
 
-    public void RemoveObserver(Func<IEnumerable<GetMessageDto>, Task> observer)
+    public void RemoveObserver(Func<IEnumerable<DecryptedMessage>, Task> observer)
     {
         _observers.Remove(observer);
     }
@@ -37,6 +40,7 @@ public class AndroidMessageCollector : IMessageCollector
     public void StartCollectingMessages()
     {
         _repository.UpdateConnection();
+        _cryptoService.UpdateRSA();
         AndroidServiceManager.Start();
     }
 
@@ -50,19 +54,21 @@ public class AndroidMessageCollector : IMessageCollector
         var messages = await _apiService.GetNewMessagesAsync();
         if (messages.Count() == 0) return;
 
-        await UpdateDatabase(messages);
+        var decryptedMessages = DecryptMessages(messages);  
 
-        await NotifyObservers(messages);
+        await UpdateDatabase(decryptedMessages);
+
+        await NotifyObservers(decryptedMessages);
     }
 
-    private async Task NotifyObservers(IEnumerable<GetMessageDto> messages)
+    private async Task NotifyObservers(IEnumerable<DecryptedMessage> messages)
     {
         foreach (var observer in _observers) {
             await observer(messages);
         }
     }
 
-    private async Task UpdateDatabase(IEnumerable<GetMessageDto> dtos)
+    private async Task UpdateDatabase(IEnumerable<DecryptedMessage> dtos)
     {
         var messages = dtos.Select(dto => new Message {
             Content = dto.Content,
@@ -82,5 +88,15 @@ public class AndroidMessageCollector : IMessageCollector
     public void UnMute()
     {
         AndroidServiceManager.MutedUser = string.Empty;
+    }
+
+    private IEnumerable<DecryptedMessage> DecryptMessages(IEnumerable<GetMessageDto> dtos)
+    {
+        return dtos.Select(dto => new DecryptedMessage {
+            Content = _cryptoService.DecryptMessage(dto.Key, dto.IV, dto.Content),
+            Sender = dto.Sender,
+            TimeStamp = dto.TimeStamp,
+            Type = dto.Type
+        });
     }
 }

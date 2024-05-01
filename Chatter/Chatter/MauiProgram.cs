@@ -62,16 +62,37 @@ public static class MauiProgram
         var settings = new Settings();
         configuration.GetSection("Settings").Bind(settings);
         services.AddSingleton(settings);
-        // bind settings
+
+        services.AddSingleton<RsaCache>();
+
         services.AddHttpClient();
+        services.AddTransient<UserDataRepository>();
         services.AddTransient<MessageRepository>();
 
+        services.AddTransient<CryptographyService>();
         services.AddSingleton<IApiService, ApiService>();
         services.AddSingleton<DbSettings>();
 
         AddMessageCollectors(services);
 
-        // ViewModels
+        AddViewModels(services);
+        AddViews(services);
+    }
+
+    private static void AddViews(IServiceCollection services)
+    {
+        services.AddSingleton<LoginView>();
+        services.AddSingleton<DashboardView>();
+        services.AddSingleton<InviteView>();
+        services.AddSingleton<AcceptView>();
+
+        services.AddTransient<RegisterView>();
+        services.AddTransient<SearchView>();
+        services.AddTransient<ChatView>();
+    }
+
+    private static void AddViewModels(IServiceCollection services)
+    {
         services.AddSingleton<AppShellViewModel>();
         services.AddSingleton<LoginViewModel>();
         services.AddSingleton<DashboardViewModel>();
@@ -81,18 +102,6 @@ public static class MauiProgram
         services.AddTransient<RegisterViewModel>();
         services.AddTransient<SearchViewModel>();
         services.AddTransient<ChatViewModel>();
-
-
-        // Views
-        services.AddSingleton<LoginView>();
-        services.AddSingleton<DashboardView>();
-        services.AddSingleton<InviteView>();
-        services.AddSingleton<AcceptView>();
-        
-        services.AddTransient<RegisterView>();
-        services.AddTransient<SearchView>();
-        services.AddTransient<ChatView>();
-
     }
 
     private static void AddMessageCollectors(IServiceCollection services)

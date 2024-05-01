@@ -21,9 +21,12 @@ public class DbSettings
         SQLiteOpenFlags.Create |
         SQLiteOpenFlags.SharedCache;
 
-    public string FullPath 
+    public string MessagesDbPath 
         => Path.Combine(
                 FileSystem.AppDataDirectory, 
                 $"chatter{_apiService.Username.GetDeterministicHashCode()}.db3"
-           );
+            );
+
+    public string UserDataDbPath => 
+        Path.Combine(FileSystem.AppDataDirectory, "chatter-userdata.db3");
 }
