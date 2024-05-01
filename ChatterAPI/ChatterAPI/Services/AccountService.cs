@@ -43,11 +43,14 @@ public class AccountService
 
     public async Task RegisterUser(RegisterDto registerDto)
     {
+        CheckUserFields(registerDto);
+
         var user = new User {
             Username = registerDto.Username,
+            PublicKey = registerDto.PublicKey
         };
 
-        var hash = _passwordHasher.HashPassword(user, registerDto.Password);
+        string hash = _passwordHasher.HashPassword(user, registerDto.Password);
         user.PasswordHash = hash;
 
         if (await _context.Users.AnyAsync(u => u.Username == user.Username)) {
@@ -58,6 +61,20 @@ public class AccountService
         await _context.SaveChangesAsync();
     }
 
+    private void CheckUserFields(RegisterDto registerDto)
+    {
+        if (registerDto.Username.Length < 3) {
+            throw new BadRequestException("Username is too short!");
+        }
+
+        if (registerDto.Password.Length > 20) {
+            throw new BadRequestException("Username is too long!");
+        }
+
+        if (registerDto.Password.Length < 6) {
+            throw new BadRequestException("Password is too short!");
+        }
+    }
     public async Task<string> GenerateJWT(LoginDto dto)
     {
         var user = await AuthenticateUser(dto);
@@ -224,24 +241,6 @@ public class AccountService
         await _context.SaveChangesAsync();
     }
 
-    public async Task<bool> IsFriend(Guid userId, Guid friendId)
-    {
-        return await _context.FriendPairs
-            .AnyAsync(fp => fp.UserId == userId && fp.FriendId == friendId && fp.FriendshipStatus == FriendPair.Status.Friends);
-    }
-
-    public async Task<bool> IsFriendRequestSent(Guid userId, Guid friendId)
-    {
-        return await _context.FriendPairs
-            .AnyAsync(fp => fp.UserId == userId && fp.FriendId == friendId && fp.FriendshipStatus == FriendPair.Status.Invited);
-    }
-
-    public async Task<bool> IsFriendRequestReceived(Guid userId, Guid friendId)
-    {
-        return await _context.FriendPairs
-            .AnyAsync(fp => fp.UserId == friendId && fp.FriendId == userId && fp.FriendshipStatus == FriendPair.Status.Invited);
-    }
-
     public async Task<IEnumerable<string>> SearchFriends(Guid userId, string username)
     {
         var friends = await _context.Users
@@ -255,7 +254,6 @@ public class AccountService
         return friends;
     }
 
-
     public async Task<IEnumerable<SearchUserDto>> SearchUsers(Guid userId, string username)
     {
         var users = await _context.Users
@@ -268,5 +266,16 @@ public class AccountService
             .ToListAsync();
 
         return users;
+    }
+
+    public async Task UpdatePublicKey(Guid userId, string publicKey)
+    {
+        var user = await _context.Users.FindAsync(userId);
+        if (user is null) {
+            throw new BadRequestException("User not found");
+        }
+
+        user.PublicKey = publicKey;
+        await _context.SaveChangesAsync();
     }
 }

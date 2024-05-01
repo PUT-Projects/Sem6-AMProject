@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ChatterAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class InitAndFix : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,7 +17,8 @@ namespace ChatterAPI.Migrations
                 {
                     UserId = table.Column<Guid>(type: "TEXT", nullable: false),
                     FriendId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    FriendshipStatus = table.Column<int>(type: "INTEGER", nullable: false)
+                    FriendshipStatus = table.Column<int>(type: "INTEGER", nullable: false),
+                    TimeStamp = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,8 +30,9 @@ namespace ChatterAPI.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Username = table.Column<string>(type: "TEXT", nullable: false),
-                    PasswordHash = table.Column<string>(type: "TEXT", nullable: false)
+                    Username = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
+                    PasswordHash = table.Column<string>(type: "TEXT", nullable: false),
+                    PublicKey = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -43,8 +45,12 @@ namespace ChatterAPI.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     SenderId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Sender = table.Column<string>(type: "TEXT", nullable: false),
                     ReceiverId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Key = table.Column<string>(type: "TEXT", maxLength: 384, nullable: false),
+                    IV = table.Column<string>(type: "TEXT", maxLength: 384, nullable: false),
                     Content = table.Column<string>(type: "TEXT", nullable: false),
+                    Type = table.Column<int>(type: "INTEGER", nullable: false),
                     TimeStamp = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>

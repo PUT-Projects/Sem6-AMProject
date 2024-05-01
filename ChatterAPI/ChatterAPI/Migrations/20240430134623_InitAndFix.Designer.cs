@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChatterAPI.Migrations
 {
     [DbContext(typeof(ChatterContext))]
-    [Migration("20240418215423_Sender")]
-    partial class Sender
+    [Migration("20240430134623_InitAndFix")]
+    partial class InitAndFix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,6 +49,16 @@ namespace ChatterAPI.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("IV")
+                        .IsRequired()
+                        .HasMaxLength(384)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasMaxLength(384)
+                        .HasColumnType("TEXT");
+
                     b.Property<Guid>("ReceiverId")
                         .HasColumnType("TEXT");
 
@@ -82,8 +92,13 @@ namespace ChatterAPI.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("PublicKey")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Username")
                         .IsRequired()
+                        .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

@@ -8,4 +8,5 @@ public class User
     public string Username { get; set; }
     public string PasswordHash { get; set; }
     public List<Message> AwaitingMessages { get; set; } = new();
+    public string PublicKey { get; set; }
 }

@@ -13,22 +13,28 @@ public class ChatterContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>().HasKey(u => u.Id);
-        modelBuilder.Entity<User>().Property(u => u.Username).IsRequired();
-        modelBuilder.Entity<User>().Property(u => u.PasswordHash).IsRequired();
-        modelBuilder.Entity<User>().HasMany(u => u.AwaitingMessages).WithOne().HasForeignKey(m => m.ReceiverId);
+        var user = modelBuilder.Entity<User>();
+        user.HasKey(u => u.Id);
+        user.Property(u => u.Username).IsRequired().HasMaxLength(20);
+        user.Property(u => u.PasswordHash).IsRequired();
+        user.HasMany(u => u.AwaitingMessages).WithOne().HasForeignKey(m => m.ReceiverId);
+        user.Property(u => u.PublicKey).IsRequired();
 
-        modelBuilder.Entity<Message>().HasKey(m => m.Id);
-        modelBuilder.Entity<Message>().Property(m => m.SenderId).IsRequired();
-        modelBuilder.Entity<Message>().Property(m => m.ReceiverId).IsRequired();
-        modelBuilder.Entity<Message>().Property(m => m.Content).IsRequired();
-        modelBuilder.Entity<Message>().Property(m => m.Type).IsRequired();
-        modelBuilder.Entity<Message>().Property(m => m.TimeStamp).IsRequired();
+        var message = modelBuilder.Entity<Message>();
+        message.HasKey(m => m.Id);
+        message.Property(m => m.SenderId).IsRequired();
+        message.Property(m => m.ReceiverId).IsRequired();
+        message.Property(m => m.Content).IsRequired();
+        message.Property(m => m.Key).IsRequired().HasMaxLength(384);
+        message.Property(m => m.IV).IsRequired().HasMaxLength(384);
+        message.Property(m => m.Type).IsRequired();
+        message.Property(m => m.TimeStamp).IsRequired();
 
-        modelBuilder.Entity<FriendPair>().HasKey(f => new { f.UserId, f.FriendId });
-        modelBuilder.Entity<FriendPair>().Property(f => f.UserId).IsRequired();
-        modelBuilder.Entity<FriendPair>().Property(f => f.FriendId).IsRequired();
-        modelBuilder.Entity<FriendPair>().Property(f => f.FriendshipStatus).IsRequired();
-        modelBuilder.Entity<FriendPair>().Property(f => f.TimeStamp).IsRequired();
+        var friendPair = modelBuilder.Entity<FriendPair>();
+        friendPair.HasKey(f => new { f.UserId, f.FriendId });
+        friendPair.Property(f => f.UserId).IsRequired();
+        friendPair.Property(f => f.FriendId).IsRequired();
+        friendPair.Property(f => f.FriendshipStatus).IsRequired();
+        friendPair.Property(f => f.TimeStamp).IsRequired();
     }
 }

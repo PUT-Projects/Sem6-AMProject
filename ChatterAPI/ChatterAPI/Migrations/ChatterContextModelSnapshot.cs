@@ -46,6 +46,16 @@ namespace ChatterAPI.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("IV")
+                        .IsRequired()
+                        .HasMaxLength(384)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasMaxLength(384)
+                        .HasColumnType("TEXT");
+
                     b.Property<Guid>("ReceiverId")
                         .HasColumnType("TEXT");
 
@@ -79,8 +89,13 @@ namespace ChatterAPI.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("PublicKey")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Username")
                         .IsRequired()
+                        .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

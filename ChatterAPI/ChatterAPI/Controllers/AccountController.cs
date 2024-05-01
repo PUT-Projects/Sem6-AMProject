@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using System.Text;
 
 namespace ChatterAPI.Controllers;
 
@@ -109,6 +110,26 @@ public class AccountController : ControllerBase
         var requests = await _service.GetFriendRequests(UserId);
 
         return Ok(requests);
+    }
+
+    [Authorize]
+    [HttpPost("users/publickey")]
+    public async Task<IActionResult> PostPublicKey([FromBody] string publicKey)
+    {
+        await _service.UpdatePublicKey(UserId, publicKey);
+
+        return Ok();
+    }
+
+    [Authorize]
+    [HttpGet("users/{username}/publickey")]
+    public async Task<IActionResult> GetPublicKey([FromRoute] string username)
+    {
+        var user = await _service.GetUser(username);
+        
+        string based = Convert.ToBase64String(Encoding.UTF8.GetBytes(user.PublicKey));
+
+        return Ok(based);
     }
 
     private Guid UserId => Guid.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);

@@ -32,6 +32,8 @@ public class ChattingService
             ReceiverId = receiver.Id,
             Content = message.Content,
             TimeStamp = message.TimeStamp,
+            Key = message.Key,
+            IV = message.IV,
         };
 
         receiver.AwaitingMessages.Add(newMessage);
@@ -52,8 +54,10 @@ public class ChattingService
                 Sender = msg.Sender,
                 Content = msg.Content,
                 TimeStamp = msg.TimeStamp,
-            })
-            .ToList();
+                Key = msg.Key,
+                IV = msg.IV,
+            }).ToList();
+
         user.AwaitingMessages.Clear();
 
         await _context.SaveChangesAsync();
