@@ -34,7 +34,7 @@ public class UserDataRepository : IDisposable
 
     public void AddUserData(string xml)
     {
-        var x = _connection!.Insert(new UserData { Username = _apiService.Username, XmlKeys = xml });
+         var x = _connection!.Insert(new UserData { Username = _apiService.Username, XmlKeys = xml });
     }
 
     public bool UserDataExists(string username)

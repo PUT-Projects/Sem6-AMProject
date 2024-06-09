@@ -26,6 +26,11 @@ public class ChattingService
             throw new BadRequestException("You cannot send messages to yourself!");
         }
 
+        // check if public key matches
+        if (message.ReceiverPublicKey != receiver.PublicKey) {
+            throw new ConflictException("Public key does not match the receiver's public key!");
+        }
+
         var newMessage = new Message {
             SenderId = senderId,
             Sender = sender,
@@ -34,6 +39,7 @@ public class ChattingService
             TimeStamp = message.TimeStamp,
             Key = message.Key,
             IV = message.IV,
+            Type = message.Type,
         };
 
         receiver.AwaitingMessages.Add(newMessage);
@@ -56,6 +62,7 @@ public class ChattingService
                 TimeStamp = msg.TimeStamp,
                 Key = msg.Key,
                 IV = msg.IV,
+                Type = msg.Type,
             }).ToList();
 
         user.AwaitingMessages.Clear();

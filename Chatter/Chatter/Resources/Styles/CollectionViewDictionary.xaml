@@ -155,14 +155,37 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="MyImageMessageStyle">
+        <Frame Style="{StaticResource MessageFrameStyle}" Margin="15,5,60,5" MaximumHeightRequest="400" MaximumWidthRequest="200"
+               HorizontalOptions="Start" VerticalOptions="Center" Padding="0"
+               BorderColor="Transparent" BackgroundColor="Transparent">
+
+            <Grid >
+                <Image Source="{Binding ImageSource}" Rotation="180" VerticalOptions="Center"
+                   HorizontalOptions="Center" />
+            </Grid>
+        </Frame>
+    </DataTemplate>
+
     <DataTemplate x:Key="MyMessageStyle">
         <Frame Style="{StaticResource MessageFrameStyle}" Margin="15,5,60,5"
-               HorizontalOptions="Start" VerticalOptions="Center"
+               HorizontalOptions="Start" VerticalOptions="Center" Padding="0"
                BorderColor="{AppThemeBinding Light={StaticResource PrimaryDark}, Dark={StaticResource Primary}}"
                BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryDark}, Dark={StaticResource Primary}}">
 
-            <Label Text="{Binding Content}" FontSize="15" Rotation="180"
-                   HorizontalOptions="Start" LineBreakMode="WordWrap" Padding="5,0,5,0" />
+            <Grid >
+                <Label Text="{Binding Content}" FontSize="15" Rotation="180" VerticalOptions="Center"
+                   HorizontalOptions="Center" LineBreakMode="WordWrap" Padding="7" />
+
+                <Button BackgroundColor="Transparent" BorderColor="Transparent" 
+                        MinimumHeightRequest="0" MinimumWidthRequest="0" Margin="0" Padding="0" 
+                        VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" >
+
+                    <Button.Behaviors>
+                        <toolkit:TouchBehavior LongPressCommand="{Binding CopyCommand}"/>
+                    </Button.Behaviors>
+                </Button>
+            </Grid>
 
         </Frame>
     </DataTemplate>
@@ -179,14 +202,37 @@
         </Frame>
     </DataTemplate>
 
+    <DataTemplate x:Key="FriendImageMessageStyle">
+        <Frame Style="{StaticResource MessageFrameStyle}" Margin="60,5,15,5" MaximumHeightRequest="400" MaximumWidthRequest="200"
+               HorizontalOptions="End" VerticalOptions="Center" Padding="0"
+               BorderColor="Transparent" BackgroundColor="Transparent">
+
+            <Grid >
+                <Image Source="{Binding ImageSource}" Rotation="180" VerticalOptions="Center"
+                   HorizontalOptions="Center" />
+            </Grid>
+        </Frame>
+    </DataTemplate>
+
     <DataTemplate x:Key="FriendMessageStyle">
         <Frame Style="{StaticResource MessageFrameStyle}" Margin="60,5,15,5"
-               HorizontalOptions="End" VerticalOptions="Center"
+               HorizontalOptions="End" VerticalOptions="Center" Padding="0"
                BorderColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray600}}"
                BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray600}}">
-            
-            <Label Text="{Binding Content}" FontSize="15" Rotation="180"
-                   HorizontalOptions="End" LineBreakMode="WordWrap" Padding="5,0,5,0" />
+
+            <Grid>
+                <Label Text="{Binding Content}" FontSize="15" Rotation="180"
+                   HorizontalOptions="Center" LineBreakMode="WordWrap" Padding="7" />
+
+                <Button BackgroundColor="Transparent" BorderColor="Transparent" 
+                     MinimumHeightRequest="0" MinimumWidthRequest="0" Margin="0" Padding="0" 
+                     VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" >
+
+                    <Button.Behaviors>
+                        <toolkit:TouchBehavior LongPressCommand="{Binding CopyCommand}"/>
+                    </Button.Behaviors>
+                </Button>
+            </Grid>
         </Frame>
     </DataTemplate>
 
@@ -196,7 +242,7 @@
                BorderColor="Transparent"
                BackgroundColor="Transparent">
 
-            <Label Text="{Binding Content}" FontSize="32" Rotation="180"
+            <Label Text="{Binding Content}" FontSize="32" Rotation="180" 
                    HorizontalOptions="Start" LineBreakMode="WordWrap" Padding="0" />
 
         </Frame>

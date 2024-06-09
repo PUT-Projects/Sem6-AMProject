@@ -56,6 +56,8 @@ public class AndroidMessageCollector : IMessageCollector
 
         var decryptedMessages = DecryptMessages(messages);  
 
+        var tmp = decryptedMessages.ToList();
+
         await UpdateDatabase(decryptedMessages);
 
         await NotifyObservers(decryptedMessages);

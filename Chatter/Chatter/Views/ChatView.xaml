@@ -37,7 +37,48 @@
                BorderColor="Transparent" VerticalOptions="FillAndExpand"
                BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}">
             
-            <Grid ColumnDefinitions="60, *, 50" VerticalOptions="FillAndExpand">
+            <Grid ColumnDefinitions="auto, *, 50" VerticalOptions="FillAndExpand">
+
+
+                <HorizontalStackLayout Padding="0" Margin="0" Grid.Column="0" 
+                                       VerticalOptions="Center" HorizontalOptions="Center">
+
+                    <Grid Padding="0" Margin="0">
+                        
+                        <Image Grid.Column="0" Source="location.png"
+                       HeightRequest="26" WidthRequest="26"
+                       HorizontalOptions="Center" VerticalOptions="Center">
+                            <Image.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+                            </Image.Behaviors>
+                        </Image>
+                        
+                        <Button Background="Transparent" ZIndex="1" 
+                            VerticalOptions="Center" HorizontalOptions="Center"
+                            HeightRequest="40" WidthRequest="40"
+                            Command="{Binding SendLocationCommand}" />
+                    </Grid>
+
+                    <Grid Padding="0" Margin="0">
+
+                        <Image Grid.Column="0" Source="images.png"
+                       HeightRequest="26" WidthRequest="26"
+                       HorizontalOptions="Center" VerticalOptions="Center">
+                            <Image.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+                            </Image.Behaviors>
+                        </Image>
+
+                        <Button Background="Transparent" ZIndex="1" 
+                            VerticalOptions="Center" HorizontalOptions="Center"
+                            HeightRequest="40" WidthRequest="40"
+                            Command="{Binding PickImageCommand}" />
+                        
+                    </Grid>
+
+                </HorizontalStackLayout>
+
+
                 <Frame Grid.Column="1" CornerRadius="25" BorderColor="Transparent" Padding="15,5" HeightRequest="40"
                        VerticalOptions="Center" HorizontalOptions="FillAndExpand"
                        BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource OffBlack}}">

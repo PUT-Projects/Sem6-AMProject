@@ -65,7 +65,8 @@ public class CryptographyService
         var output = new EncryptedMessage {
             Content = Convert.ToBase64String(encryptedMessage),
             Key = Convert.ToBase64String(encryptedAesKey),
-            IV = Convert.ToBase64String(encryptedIV)
+            IV = Convert.ToBase64String(encryptedIV),
+            PublicKey = rsa.ToXmlString(false)
         };
 
         return output;
@@ -93,13 +94,19 @@ public class CryptographyService
         return srDecrypt.ReadToEnd();
     }
 
-
-
-    public static string GenerateNewKeyPairXml()
+    public static string GetPublicKey(string xml)
     {
-        using var rsa = new RSACryptoServiceProvider(2048);
+        using var rsa = new RSACryptoServiceProvider();
+        rsa.FromXmlString(xml);
 
-        return rsa.ToXmlString(true);
+        return rsa.ToXmlString(false);
+    }
+
+    public static RSACryptoServiceProvider GenerateNewKeyPair()
+    {
+        var rsa = new RSACryptoServiceProvider(2048);
+
+        return rsa;
     }
 
     private void ImportMyKeyPair(string keysXml)

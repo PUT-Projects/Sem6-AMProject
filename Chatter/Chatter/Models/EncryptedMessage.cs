@@ -11,4 +11,5 @@ public class EncryptedMessage
     public string Content { get; set; }
     public string Key { get; set; }
     public string IV { get; set; }
+    public string PublicKey { get; set; }
 }

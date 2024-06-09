@@ -31,6 +31,11 @@ namespace Chatter.Selectors
 
         private DataTemplate GetMyTemplate(Message message)
         {
+            if (message.Type == Message.MessageType.Image) {
+                Application.Current!.Resources.TryGetValue("MyImageMessageStyle", out var template);
+                return (DataTemplate)template;
+            }
+
             if (ContainsOnlyEmojis(message.Content)) {
                 Application.Current!.Resources.TryGetValue("MyMessageOnlyEmojiStyle", out var template);
                 return (DataTemplate)template;
@@ -43,6 +48,11 @@ namespace Chatter.Selectors
 
         private DataTemplate GetFriendTemplate(Message message)
         {
+            if (message.Type == Message.MessageType.Image) {
+                Application.Current!.Resources.TryGetValue("FriendImageMessageStyle", out var template);
+                return (DataTemplate)template;
+            }
+
             if (ContainsOnlyEmojis(message.Content)) {
                 Application.Current!.Resources.TryGetValue("FriendMessageOnlyEmojiStyle", out var template);
                 return (DataTemplate)template;

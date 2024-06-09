@@ -1,4 +1,7 @@
-﻿using SQLite;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Mvvm.Input;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,4 +28,14 @@ public class Message
     public string Receiver { get; set; }
     [NotNull]
     public DateTime TimeStamp { get; set; }
+
+    [Ignore]
+    public IAsyncRelayCommand CopyCommand => new AsyncRelayCommand(async () => {
+        await Clipboard.SetTextAsync(Content);
+    });
+
+    [Ignore]
+    public ImageSource ImageSource =>
+            ImageSource.FromStream(() => new MemoryStream(Convert.FromBase64String(Content)));
+        
 }

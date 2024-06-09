@@ -2,6 +2,7 @@
 using SQLite;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,7 +33,16 @@ public class MessageRepository : IDisposable
     }
     public async Task AddMessages(IEnumerable<Message> messages)
     {
-        var res = await _connection!.InsertAllAsync(messages);
+        //var res = await _connection!.InsertAllAsync(messages);
+        //Debug.WriteLine($"Inserted {res} messages");
+        if (_connection is null) {
+            Debug.WriteLine("Connection is null");
+            return;
+        }
+        else {
+            var x  = await _connection.InsertAllAsync(messages);
+            Debug.WriteLine("Connection is not null");
+        }
     }
 
     public async Task<List<Message>> GetMessagesAsync(string sender, int count = 2)

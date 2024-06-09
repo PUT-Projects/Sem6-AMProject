@@ -30,37 +30,55 @@ class ApiService : IApiService
     public async Task<bool> RegisterUserAsync(Models.Startup.RegisterUser user)
     {
         using var client = _httpClientFactory.CreateClient();
+        client.Timeout = TimeSpan.FromSeconds(8);
 
-        var response = await client.PostAsJsonAsync($"{_settings.ApiUrl}/account/register", user);
+        try {
+            var response = await client.PostAsJsonAsync($"{_settings.ApiUrl}/account/register", user);
 
-        return await HandleResponse(response, "An error occurred while registering the user.");
+            return await HandleResponse(response, "An error occurred while registering the user.");
+
+        }
+        catch (TaskCanceledException ex) {
+            var toast = Toast.Make("The request timed out.", ToastDuration.Long, 15);
+            await toast.Show();
+            return false;
+        }
     }
 
     public async Task<bool> LoginUserAsync(Models.Startup.User user)
     {
         using var client = _httpClientFactory.CreateClient();
+        client.Timeout = TimeSpan.FromSeconds(8);
 
-        var response = await client.PostAsJsonAsync($"{_settings.ApiUrl}/account/login", user);
+        try {
+            var response = await client.PostAsJsonAsync($"{_settings.ApiUrl}/account/login", user);
 
-        if (response is null) {
-            var toast = Toast.Make("An error occurred while logging in the user.", ToastDuration.Long, 15);
-            await toast.Show();
-            return false;
-        }
+            if (response is null) {
+                var toast = Toast.Make("An error occurred while logging in the user.", ToastDuration.Long, 15);
+                await toast.Show();
+                return false;
+            }
 
-        var content = await response.Content.ReadAsStringAsync();
-        if (!response.IsSuccessStatusCode) {
-            var toast = Toast.Make(content, ToastDuration.Long, 15);
-            await toast.Show();
-            return false;
-        }
+            var content = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode) {
+                var toast = Toast.Make(content, ToastDuration.Long, 15);
+                await toast.Show();
+                return false;
+            }
 
-        _jwtToken = "Bearer " + content;
-        Username = user.Username;
+            _jwtToken = "Bearer " + content;
+            Username = user.Username;
 #if ANDROID
         Platforms.Android.AndroidServiceManager.Username = user.Username;
 #endif
-        return true;
+
+            return true;
+        }
+        catch (TaskCanceledException ex) {
+            var toast = Toast.Make("The request timed out.", ToastDuration.Long, 15);
+            await toast.Show();
+            return false;
+        }
     }
 
     public async Task<IEnumerable<User>> GetFriendsAsync()
@@ -246,14 +264,20 @@ class ApiService : IApiService
         }
     }
 
-    public async Task<bool> SendMessageAsync(PostMessageDto message)
+    public async Task<PostMessageDto.Result> SendMessageAsync(PostMessageDto message)
     {
         using var client = _httpClientFactory.CreateClient();
         ConfigureHttpClient(client);
 
         var response = await client.PostAsJsonAsync($"{_settings.ApiUrl}/chatting/message", message);
 
-        return await HandleResponse(response, "An error occurred while sending the message.");
+        bool success = await HandleResponse(response, "An error occurred while sending the message.");
+
+        if (success) return PostMessageDto.Result.Success;
+
+        if (response.StatusCode == HttpStatusCode.Conflict) return PostMessageDto.Result.PublicKeyExpired;
+
+        return PostMessageDto.Result.Failed;
     }
 
     public async Task<string> GetPublicKey(string username)
@@ -274,5 +298,13 @@ class ApiService : IApiService
             return string.Empty;
         
         }
+    }
+
+    public async Task PostPublicKeyAsync(string publicKeyXml)
+    {
+        using var client = _httpClientFactory.CreateClient();
+        ConfigureHttpClient(client);
+
+        var response = await client.PostAsJsonAsync($"{_settings.ApiUrl}/account/users/publickey", publicKeyXml);
     }
 }

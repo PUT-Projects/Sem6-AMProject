@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Chatter.Views.Dashboard.SearchView"
              Shell.NavBarIsVisible="True"
-             Title="SearchView">
+             Title="Search among your contacts">
 
     <VerticalStackLayout Spacing="5">
         <Frame BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray900}}" Padding="-8" Margin="15" CornerRadius="40" BorderColor="Transparent">

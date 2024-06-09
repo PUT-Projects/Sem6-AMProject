@@ -24,6 +24,11 @@ public class ChattingController : ControllerBase
     {
         var messages = await _service.GetAwaitingMessages(UserId);
 
+
+        if (messages.Count() > 0) {
+            Console.WriteLine("Messages received");
+        }
+
         return Ok(messages);
     }
 
@@ -31,6 +36,10 @@ public class ChattingController : ControllerBase
     public async Task<IActionResult> SendMessage([FromBody] MessageDto message)
     {
         await _service.SendMessage(UserId, Username, message);
+
+        if (message.Type == Entities.Message.MessageType.Image) {
+            Console.WriteLine("Image message sent");
+        }
 
         return Ok();
     }

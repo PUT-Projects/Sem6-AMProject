@@ -44,7 +44,7 @@ public class BackgroundService : Service
 
         StartForeground(id, notification);
 
-        timer = new Timer(Timer_Elapsed, builder, 0, 1000000);
+        timer = new Timer(Timer_Elapsed, builder, 0, 500);
 
         AndroidServiceManager.MessageCollector!.AddObserver(OnNewMessages);
 

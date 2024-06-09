@@ -10,6 +10,7 @@ namespace ChatterAPI.Models
         public string Receiver { get; set; }
         public Message.MessageType Type { get; set; }
         public DateTime TimeStamp { get; set; }
+        public string ReceiverPublicKey { get; set; }
 
     }
 }

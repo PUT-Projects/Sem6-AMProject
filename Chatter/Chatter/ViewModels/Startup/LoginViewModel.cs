@@ -10,6 +10,7 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -48,10 +49,12 @@ public sealed class LoginViewModel : ViewModelBase
     private async Task Login()
     {
         IsLoading = true;
+
         bool success = await _apiService.LoginUserAsync(User);
         IsLoading = false;
         if (success) {
-            TryCreateRSA();
+            string rsaKey = TryCreateRSA();
+            await _apiService.PostPublicKeyAsync(rsaKey);
             _messageCollector.StartCollectingMessages();
             var toast = Toast.Make("Starting service...", ToastDuration.Long, 15);
             await toast.Show();
@@ -62,17 +65,21 @@ public sealed class LoginViewModel : ViewModelBase
         }
     }
 
-    private void TryCreateRSA()
+    private string TryCreateRSA()
     {
         _userDataRepository.UpdateConnection();
-        if (_userDataRepository.UserDataExists(User.Username)) return;
+        if (_userDataRepository.UserDataExists(User.Username)) {
+            return CryptographyService.GetPublicKey(_userDataRepository.GetCurrentUserData()!.XmlKeys);
+        }
 
-        string rsaCreds = CryptographyService.GenerateNewKeyPairXml();
+        var rsaCreds = CryptographyService.GenerateNewKeyPair();
 
-        _userDataRepository.AddUserData(rsaCreds);
+        _userDataRepository.AddUserData(rsaCreds.ToXmlString(true));
 
         var toast = Toast.Make("RSA keys created!", ToastDuration.Long, 15);
         toast.Show();
+
+        return rsaCreds.ToXmlString(false);
     }
 
     private async void Register()

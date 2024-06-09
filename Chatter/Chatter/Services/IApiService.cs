@@ -18,6 +18,7 @@ public interface IApiService
     Task<IEnumerable<SearchUser>> SearchUsersAsync(string searchQuery);
     Task<IEnumerable<AcceptUser>> GetFriendRequests();
     Task<IEnumerable<GetMessageDto>> GetNewMessagesAsync();
-    Task<bool> SendMessageAsync(PostMessageDto message);
+    Task<PostMessageDto.Result> SendMessageAsync(PostMessageDto message);
     Task<string> GetPublicKey(string username);
+    Task PostPublicKeyAsync(string publicKeyXml);
 }

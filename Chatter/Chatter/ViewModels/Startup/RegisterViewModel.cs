@@ -63,8 +63,8 @@ public sealed class RegisterViewModel : ViewModelBase
         if (!await AnalyzeInputAndHighlightErrorsAsync()) return;
 
         IsLoading = true;
-        string rsaCreds = CryptographyService.GenerateNewKeyPairXml();
-        User.PublicKey = rsaCreds;
+        using var rsaCreds = CryptographyService.GenerateNewKeyPair();
+        User.PublicKey = rsaCreds.ToXmlString(false);
 
         if (!await _apiService.RegisterUserAsync(User)) {
             // registration failed
@@ -75,7 +75,7 @@ public sealed class RegisterViewModel : ViewModelBase
 
         await _apiService.LoginUserAsync(User);
 
-        _userDataRepository.AddUserData(rsaCreds);
+        _userDataRepository.AddUserData(rsaCreds.ToXmlString(true));
 
         var toast = Toast.Make("RSA keys created!", ToastDuration.Long, 15);
         await toast.Show();

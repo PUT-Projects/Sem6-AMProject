@@ -159,6 +159,13 @@ public class AccountService
             }
         }
 
+        // check if the friend has already sent a request
+        var reversePair = await _context.FriendPairs.FirstOrDefaultAsync(fp => fp.UserId == friend.Id && fp.FriendId == userId);
+        if (reversePair is not null) {
+            await AcceptFriendRequest(userId, user.Username);
+            return;
+        }
+
         var friendPair = new FriendPair {
             UserId = userId,
             FriendId = friend.Id,
