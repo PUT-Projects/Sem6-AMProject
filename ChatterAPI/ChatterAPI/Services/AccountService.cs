@@ -67,7 +67,7 @@ public class AccountService
             throw new BadRequestException("Username is too short!");
         }
 
-        if (registerDto.Password.Length > 20) {
+        if (registerDto.Username.Length > 20) {
             throw new BadRequestException("Username is too long!");
         }
 
