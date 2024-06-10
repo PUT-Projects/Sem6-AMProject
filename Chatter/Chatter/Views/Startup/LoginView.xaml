@@ -21,8 +21,12 @@
             Padding="30,0" 
             VerticalOptions="Center" Grid.Row="1">
 
-            <Image Source="company_logo.jpg" HeightRequest="150" WidthRequest="150" />
-
+            <Image x:Name="LogoImage" Source="company_logo.png" HeightRequest="150" WidthRequest="150">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped"/>
+                </Image.GestureRecognizers>
+            </Image>
+ 
             <VerticalStackLayout Spacing="5">
                 <Label Text="Welcome!" FontSize="28" TextColor="Gray" HorizontalTextAlignment="Center" />
                 <Label Text="Login to your account" FontSize="18" TextColor="Gray" HorizontalTextAlignment="Center" />

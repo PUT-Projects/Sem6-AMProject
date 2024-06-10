@@ -4,9 +4,17 @@ namespace Chatter.Views.Startup;
 
 public partial class LoginView : ContentPage
 {
-	public LoginView(LoginViewModel viewModel)
+    private LoginViewModel ViewModel => (BindingContext as LoginViewModel)!;
+    public LoginView(LoginViewModel viewModel)
 	{
 		InitializeComponent();
 		BindingContext = viewModel;
 	}
+
+    private void OnTapGestureRecognizerTapped(object sender, TappedEventArgs e)
+    {
+        if (ViewModel.RunAnimationCommand.CanExecute(LogoImage)) {
+            ViewModel.RunAnimationCommand.Execute(LogoImage);
+        }
+    }
 }

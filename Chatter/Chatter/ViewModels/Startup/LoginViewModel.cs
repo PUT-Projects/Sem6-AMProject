@@ -25,12 +25,14 @@ public sealed class LoginViewModel : ViewModelBase
     private readonly IApiService _apiService;
     private readonly IMessageCollector _messageCollector;
     private readonly UserDataRepository _userDataRepository;
+    public IAsyncRelayCommand<Image> RunAnimationCommand { get; }
 
     public User User { get; set; }
     public IAsyncRelayCommand LoginCommand { get; }
 
     public ICommand RegisterCommand { get; }
     public bool IsLoading { get; set; }
+    public Image LogoImage { get; set; }
 
     public LoginViewModel(IApiService apiService, IMessageCollector messageCollector, UserDataRepository userDataRepository)
     {
@@ -44,6 +46,18 @@ public sealed class LoginViewModel : ViewModelBase
 
         LoginCommand = new AsyncRelayCommand(Login);
         RegisterCommand = new Command(Register);
+        RunAnimationCommand = new AsyncRelayCommand<Image>(async (LogoImage) => {
+            
+            var a1 = LogoImage!.RotateTo(180, 1000);
+            var a2 = LogoImage!.FadeTo(0, 1000);
+
+            await Task.WhenAll(a1, a2);
+
+            var a3 = LogoImage!.RotateTo(0, 1000);
+            var a4 = LogoImage!.FadeTo(1, 1000);
+
+            await Task.WhenAll(a3, a4);
+        });
     }
 
     private async Task Login()
@@ -86,4 +100,5 @@ public sealed class LoginViewModel : ViewModelBase
     {
         await Shell.Current.Navigation.PushAsync(RegisterView.Create());
     }
+
 }

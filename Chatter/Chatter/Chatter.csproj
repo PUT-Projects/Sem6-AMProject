@@ -63,7 +63,7 @@
 	  <None Remove="Resources\Images\bubble_chat.png" />
 	  <None Remove="Resources\Images\check.png" />
 	  <None Remove="Resources\Images\close.png" />
-	  <None Remove="Resources\Images\company_logo.jpg" />
+	  <None Remove="Resources\Images\company_logo.png" />
 	  <None Remove="Resources\Images\contact_us.png" />
 	  <None Remove="Resources\Images\dashboard.png" />
 	  <None Remove="Resources\Images\images.png" />

@@ -30,10 +30,10 @@ public class AcceptViewModel : ViewModelBase
         RefreshCommand = new AsyncRelayCommand(RefreshAsync);
         IsRefreshing = false;
         
-        FriendRequests.Add(new AcceptUser { Username = "JohnDoe" });
-        FriendRequests.Add(new AcceptUser { Username = "JaneDoe" });
-        FriendRequests.Add(new AcceptUser { Username = "JohnSmith" });
-        FriendRequests.Add(new AcceptUser { Username = "Alice" });
+        //FriendRequests.Add(new AcceptUser { Username = "JohnDoe" });
+        //FriendRequests.Add(new AcceptUser { Username = "JaneDoe" });
+        //FriendRequests.Add(new AcceptUser { Username = "JohnSmith" });
+        //FriendRequests.Add(new AcceptUser { Username = "Alice" });
     }
 
     public void RunApiService()
@@ -46,7 +46,7 @@ public class AcceptViewModel : ViewModelBase
     private async void RefreshLoop()
     {
         while (true) {
-            await Task.Delay(60000);
+            await Task.Delay(15000);
             await RefreshAsync();
         }
     }
