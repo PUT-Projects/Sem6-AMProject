@@ -22,12 +22,12 @@ public sealed class RegisterViewModel : ViewModelBase
 {
     private readonly IApiService _apiService;
     private readonly UserDataRepository _userDataRepository;
-
+    private readonly IMessageCollector _messageCollector;
     public RegisterUser User { get; set; }
     public ICommand RegisterCommand { get; }
     public ICommand BackCommand { get; }
     public bool IsLoading { get; set; }
-    public RegisterViewModel(IApiService apiService, UserDataRepository userDataRepository)
+    public RegisterViewModel(IApiService apiService, UserDataRepository userDataRepository, IMessageCollector messageCollector)
     {
         _apiService = apiService;
         _userDataRepository = userDataRepository;
@@ -40,6 +40,7 @@ public sealed class RegisterViewModel : ViewModelBase
         RegisterCommand = new Command(Register);
         BackCommand = new Command(OnBackButtonPressed);
         IsLoading = false;
+        _messageCollector = messageCollector;
     }
 
     public void UpdateColors(Frame entryFrame, Frame entryIconFrame, Image entryIcon)
@@ -77,6 +78,7 @@ public sealed class RegisterViewModel : ViewModelBase
 
         _userDataRepository.AddUserData(rsaCreds.ToXmlString(true));
 
+        _messageCollector.StartCollectingMessages();
         var toast = Toast.Make("RSA keys created!", ToastDuration.Long, 15);
         await toast.Show();
 
